@@ -1,0 +1,102 @@
+object TildaDesignMainForm: TTildaDesignMainForm
+  Left = 444
+  Height = 610
+  Top = 168
+  Width = 545
+  Caption = 'Tilda Designer'
+  ClientHeight = 585
+  ClientWidth = 545
+  Menu = MainMenu1
+  OnCreate = FormCreate
+  OnShow = FormShow
+  LCLVersion = '2.2.0.4'
+  object VirtualStringTree1: TVirtualStringTree
+    Left = 8
+    Height = 537
+    Top = 40
+    Width = 200
+    Align = alLeft
+    BorderSpacing.Left = 8
+    BorderSpacing.Top = 8
+    BorderSpacing.Bottom = 8
+    DefaultText = 'Node'
+    Header.AutoSizeIndex = 0
+    Header.Columns = <>
+    Header.MainColumn = -1
+    TabOrder = 0
+    TreeOptions.PaintOptions = [toShowButtons, toShowDropmark, toShowTreeLines, toThemeAware, toUseBlendedImages]
+    TreeOptions.SelectionOptions = [toFullRowSelect, toAlwaysSelectNode]
+    OnChange = VirtualStringTree1Change
+    OnGetText = VirtualStringTree1GetText
+  end
+  object Panel1: TPanel
+    Left = 216
+    Height = 537
+    Top = 40
+    Width = 321
+    Align = alClient
+    BorderSpacing.Top = 8
+    BorderSpacing.Right = 8
+    BorderSpacing.Bottom = 8
+    TabOrder = 1
+  end
+  object ToolBar1: TToolBar
+    Left = 0
+    Top = 0
+    Width = 545
+    AutoSize = True
+    ButtonHeight = 30
+    ButtonWidth = 31
+    Caption = 'ToolBar1'
+    TabOrder = 2
+    object ToolButton1: TToolButton
+      Left = 1
+      Top = 2
+      Action = actFileNewApp
+    end
+  end
+  object Splitter1: TSplitter
+    Left = 208
+    Height = 553
+    Top = 32
+    Width = 8
+  end
+  object ActionList1: TActionList
+    Left = 267
+    Top = 157
+    object actFileNewApp: TAction
+      Category = 'File'
+      Caption = 'New Application...'
+      OnExecute = actFileNewAppExecute
+    end
+    object actObjNewPage: TAction
+      Category = 'Object'
+      Caption = 'New Page...'
+      OnExecute = actObjNewPageExecute
+    end
+    object actObjNewPanel: TAction
+      Category = 'Object'
+      Caption = 'New Panel...'
+      OnExecute = actObjNewPanelExecute
+    end
+  end
+  object MainMenu1: TMainMenu
+    Left = 338
+    Top = 160
+    object MenuItem1: TMenuItem
+      Caption = '&File'
+      object MenuItem2: TMenuItem
+        Action = actFileNewApp
+      end
+    end
+    object MenuItem3: TMenuItem
+      Caption = 'Object'
+      object MenuItem4: TMenuItem
+        Action = actObjNewPage
+      end
+      object MenuItem5: TMenuItem
+        Action = actObjNewPanel
+      end
+    end
+  end
+end

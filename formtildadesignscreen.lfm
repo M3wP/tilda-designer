@@ -1,0 +1,19 @@
+object TildaDesignScreenForm: TTildaDesignScreenForm
+  Left = 691
+  Height = 476
+  Top = 271
+  Width = 716
+  Caption = 'TildaDesignScreenForm'
+  ClientHeight = 476
+  ClientWidth = 716
+  LCLVersion = '2.2.0.4'
+  object PaintBox1: TPaintBox
+    Left = 8
+    Height = 460
+    Top = 8
+    Width = 700
+    Align = alClient
+    BorderSpacing.Around = 8
+    ParentColor = False
+  end
+end

@@ -1,0 +1,104 @@
+object TildaDesignNewAppForm: TTildaDesignNewAppForm
+  Left = 730
+  Height = 429
+  Top = 277
+  Width = 393
+  Caption = 'New Application...'
+  ClientHeight = 429
+  ClientWidth = 393
+  OnCloseQuery = FormCloseQuery
+  OnShow = FormShow
+  LCLVersion = '2.2.0.4'
+  object ValueListEditor1: TValueListEditor
+    Left = 8
+    Height = 286
+    Top = 90
+    Width = 377
+    Align = alClient
+    BorderSpacing.Around = 8
+    DefaultColWidth = 160
+    FixedCols = 0
+    RowCount = 7
+    TabOrder = 0
+    Strings.Strings = (
+      'Module Ident='
+      'UInterface Ident='
+      'Layer Ident='
+      'View Ident='
+      'Screen Width='
+      'Screen Height='
+    )
+    TitleCaptions.Strings = (
+      'Property'
+      'Value'
+    )
+    ColWidths = (
+      160
+      215
+    )
+  end
+  object Panel1: TPanel
+    Left = 8
+    Height = 74
+    Top = 8
+    Width = 377
+    Align = alTop
+    BorderSpacing.Around = 8
+    BevelOuter = bvNone
+    ClientHeight = 74
+    ClientWidth = 377
+    TabOrder = 1
+    object Label1: TLabel
+      Left = 0
+      Height = 49
+      Top = 25
+      Width = 377
+      Align = alClient
+      Caption = 'Please enter the values for the properties listed below in order to construct these objects.'
+      WordWrap = True
+    end
+    object Label2: TLabel
+      Left = 0
+      Height = 17
+      Top = 0
+      Width = 377
+      Align = alTop
+      BorderSpacing.Bottom = 8
+      Caption = 'An Application requires a number of objects.'
+    end
+  end
+  object Panel2: TPanel
+    Left = 8
+    Height = 37
+    Top = 384
+    Width = 377
+    Align = alBottom
+    BorderSpacing.Around = 8
+    BevelOuter = bvNone
+    ClientHeight = 37
+    ClientWidth = 377
+    TabOrder = 2
+    object BitBtn2: TBitBtn
+      Left = 190
+      Height = 30
+      Top = 0
+      Width = 91
+      Cancel = True
+      DefaultCaption = True
+      Kind = bkCancel
+      ModalResult = 2
+      TabOrder = 0
+    end
+    object BitBtn1: TBitBtn
+      Left = 286
+      Height = 30
+      Top = 0
+      Width = 91
+      Default = True
+      DefaultCaption = True
+      Kind = bkOK
+      ModalResult = 1
+      TabOrder = 1
+    end
+  end
+end

@@ -1,0 +1,63 @@
+object TildaDesignAddSubItemForm: TTildaDesignAddSubItemForm
+  Left = 693
+  Height = 341
+  Top = 430
+  Width = 313
+  Caption = 'Add Sub Item...'
+  ClientHeight = 341
+  ClientWidth = 313
+  OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
+  LCLVersion = '2.2.0.4'
+  object Panel2: TPanel
+    Left = 8
+    Height = 37
+    Top = 296
+    Width = 297
+    Align = alBottom
+    BorderSpacing.Around = 8
+    BevelOuter = bvNone
+    ClientHeight = 37
+    ClientWidth = 297
+    TabOrder = 0
+    object BitBtn1: TBitBtn
+      Left = 208
+      Height = 30
+      Top = 0
+      Width = 91
+      Default = True
+      DefaultCaption = True
+      Kind = bkOK
+      ModalResult = 1
+      TabOrder = 0
+    end
+    object BitBtn2: TBitBtn
+      Left = 112
+      Height = 30
+      Top = 0
+      Width = 91
+      Cancel = True
+      DefaultCaption = True
+      Kind = bkCancel
+      ModalResult = 2
+      TabOrder = 1
+    end
+  end
+  object VirtualStringTree1: TVirtualStringTree
+    Left = 8
+    Height = 280
+    Top = 8
+    Width = 297
+    Align = alClient
+    BorderSpacing.Around = 8
+    DefaultText = 'Node'
+    Header.AutoSizeIndex = 0
+    Header.Columns = <>
+    Header.MainColumn = -1
+    TabOrder = 1
+    TreeOptions.PaintOptions = [toShowButtons, toShowDropmark, toShowTreeLines, toThemeAware, toUseBlendedImages]
+    TreeOptions.SelectionOptions = [toFullRowSelect, toAlwaysSelectNode]
+    OnChange = VirtualStringTree1Change
+    OnGetText = VirtualStringTree1GetText
+  end
+end

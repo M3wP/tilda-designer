@@ -1,0 +1,4 @@
+inherited TildaDesignElemFrame: TTildaDesignElemFrame
+  DesignLeft = 812
+  DesignTop = 322
+end

@@ -1,0 +1,65 @@
+object TildaDesignSubItemsFrame: TTildaDesignSubItemsFrame
+  Left = 0
+  Height = 240
+  Top = 0
+  Width = 320
+  ClientHeight = 240
+  ClientWidth = 320
+  LCLVersion = '2.2.0.4'
+  TabOrder = 0
+  DesignLeft = 657
+  DesignTop = 334
+  object ToolBar1: TToolBar
+    Left = 8
+    Height = 26
+    Top = 17
+    Width = 304
+    BorderSpacing.Left = 8
+    BorderSpacing.Right = 8
+    Caption = 'ToolBar1'
+    TabOrder = 0
+    object ToolButton1: TToolButton
+      Left = 1
+      Top = 2
+      Caption = 'ToolButton1'
+      OnClick = ToolButton1Click
+    end
+    object ToolButton2: TToolButton
+      Left = 32
+      Top = 2
+      Caption = 'ToolButton2'
+    end
+    object ToolButton3: TToolButton
+      Left = 24
+      Height = 8
+      Top = 2
+      Caption = 'ToolButton3'
+      Style = tbsSeparator
+    end
+  end
+  object VirtualStringTree1: TVirtualStringTree
+    Left = 8
+    Height = 181
+    Top = 51
+    Width = 304
+    Align = alClient
+    BorderSpacing.Around = 8
+    DefaultText = 'Node'
+    Header.AutoSizeIndex = 0
+    Header.Columns = <>
+    Header.MainColumn = -1
+    TabOrder = 1
+    TreeOptions.PaintOptions = [toShowButtons, toShowDropmark, toShowTreeLines, toThemeAware, toUseBlendedImages]
+    OnGetText = VirtualStringTree1GetText
+  end
+  object Label1: TLabel
+    Left = 8
+    Height = 17
+    Top = 0
+    Width = 304
+    Align = alTop
+    BorderSpacing.Left = 8
+    BorderSpacing.Right = 8
+    Caption = 'Label1'
+  end
+end

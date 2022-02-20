@@ -1,0 +1,40 @@
+inherited TildaDesignPageFrame: TTildaDesignPageFrame
+  Height = 594
+  ClientHeight = 594
+  inherited ScrollBox1: TScrollBox
+    Height = 586
+    VertScrollBar.Increment = 58
+    VertScrollBar.Page = 584
+    ClientHeight = 584
+    ClientWidth = 312
+    inherited ValueListEditor1: TValueListEditor
+      Height = 424
+      Width = 312
+      Align = alTop
+      ColWidths = (
+        128
+        182
+      )
+    end
+    inline subitemsPanels: TTildaDesignSubItemsFrame[1]
+      Top = 424
+      Width = 312
+      Align = alTop
+      ClientWidth = 312
+      TabOrder = 1
+      inherited ToolBar1: TToolBar
+        Width = 296
+        inherited ToolButton3: TToolButton
+          Height = 22
+        end
+      end
+      inherited VirtualStringTree1: TVirtualStringTree
+        Width = 296
+      end
+      inherited Label1: TLabel
+        Width = 296
+        Caption = 'Panels'
+      end
+    end
+  end
+end

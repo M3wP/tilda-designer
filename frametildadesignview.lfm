@@ -1,0 +1,92 @@
+inherited TildaDesignViewFrame: TTildaDesignViewFrame
+  Height = 702
+  ClientHeight = 702
+  DesignLeft = 652
+  DesignTop = 124
+  inherited ScrollBox1: TScrollBox
+    Height = 694
+    VertScrollBar.Increment = 69
+    VertScrollBar.Page = 692
+    ClientHeight = 692
+    ClientWidth = 312
+    inherited ValueListEditor1: TValueListEditor
+      Height = 336
+      Width = 312
+      Align = alTop
+      ColWidths = (
+        128
+        182
+      )
+    end
+    inline subItemsLayers: TTildaDesignSubItemsFrame[1]
+      Height = 128
+      Top = 344
+      Width = 312
+      Align = alTop
+      BorderSpacing.Top = 8
+      ClientHeight = 128
+      ClientWidth = 312
+      TabOrder = 1
+      inherited ToolBar1: TToolBar
+        Width = 296
+        inherited ToolButton3: TToolButton
+          Height = 22
+        end
+      end
+      inherited VirtualStringTree1: TVirtualStringTree
+        Height = 69
+        Width = 296
+      end
+      inherited Label1: TLabel
+        Width = 296
+        Caption = 'Layers'
+      end
+    end
+    inline subItemsBars: TTildaDesignSubItemsFrame[2]
+      Height = 128
+      Top = 472
+      Width = 312
+      Align = alTop
+      ClientHeight = 128
+      ClientWidth = 312
+      TabOrder = 2
+      inherited ToolBar1: TToolBar
+        Width = 296
+        inherited ToolButton3: TToolButton
+          Height = 22
+        end
+      end
+      inherited VirtualStringTree1: TVirtualStringTree
+        Height = 69
+        Width = 296
+      end
+      inherited Label1: TLabel
+        Width = 296
+        Caption = 'Bars'
+      end
+    end
+    inline subItemsPages: TTildaDesignSubItemsFrame[3]
+      Height = 192
+      Top = 600
+      Width = 312
+      Align = alTop
+      ClientHeight = 192
+      ClientWidth = 312
+      TabOrder = 3
+      inherited ToolBar1: TToolBar
+        Width = 296
+        inherited ToolButton3: TToolButton
+          Height = 22
+        end
+      end
+      inherited VirtualStringTree1: TVirtualStringTree
+        Height = 133
+        Width = 296
+      end
+      inherited Label1: TLabel
+        Width = 296
+        Caption = 'Pages'
+      end
+    end
+  end
+end

@@ -1,0 +1,53 @@
+object TildaDesignEditFrame: TTildaDesignEditFrame
+  Left = 0
+  Height = 328
+  Top = 0
+  Width = 335
+  ClientHeight = 328
+  ClientWidth = 335
+  LCLVersion = '2.2.0.4'
+  TabOrder = 0
+  DesignLeft = 665
+  DesignTop = 324
+  object ScrollBox1: TScrollBox
+    Left = 4
+    Height = 320
+    Top = 4
+    Width = 327
+    HorzScrollBar.Page = 1
+    HorzScrollBar.Visible = False
+    VertScrollBar.Increment = 5
+    VertScrollBar.Page = 50
+    VertScrollBar.Smooth = True
+    VertScrollBar.Tracking = True
+    Align = alClient
+    BorderSpacing.Around = 4
+    ClientHeight = 318
+    ClientWidth = 325
+    TabOrder = 0
+    object ValueListEditor1: TValueListEditor
+      Left = 0
+      Height = 318
+      Top = 0
+      Width = 325
+      Align = alClient
+      DefaultColWidth = 128
+      FixedCols = 0
+      RowCount = 2
+      TabOrder = 0
+      OnButtonClick = ValueListEditor1ButtonClick
+      OnEditingDone = ValueListEditor1EditingDone
+      OnValidateEntry = ValueListEditor1ValidateEntry
+      KeyOptions = [keyUnique]
+      TitleCaptions.Strings = (
+        'Property'
+        'Value'
+      )
+      OnStringsChange = ValueListEditor1StringsChange
+      ColWidths = (
+        128
+        197
+      )
+    end
+  end
+end

@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectOptions>
+    <Version Value="12"/>
+    <General>
+      <SessionStorage Value="InProjectDir"/>
+      <Title Value="TildaDesigner"/>
+      <Scaled Value="True"/>
+      <ResourceType Value="res"/>
+      <UseXPManifest Value="True"/>
+      <XPManifest>
+        <DpiAware Value="True"/>
+      </XPManifest>
+      <Icon Value="0"/>
+    </General>
+    <BuildModes>
+      <Item Name="Default" Default="True"/>
+    </BuildModes>
+    <PublishOptions>
+      <Version Value="2"/>
+      <UseFileFilters Value="True"/>
+    </PublishOptions>
+    <RunParams>
+      <FormatVersion Value="2"/>
+    </RunParams>
+    <RequiredPackages>
+      <Item>
+        <PackageName Value="virtualtreeview_package"/>
+      </Item>
+      <Item>
+        <PackageName Value="LCL"/>
+      </Item>
+    </RequiredPackages>
+    <Units>
+      <Unit>
+        <Filename Value="TildaDesigner.lpr"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="formtildadesignmain.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="TildaDesignMainForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="FormTildaDesignMain"/>
+      </Unit>
+      <Unit>
+        <Filename Value="tildadesigntypes.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="TildaDesignTypes"/>
+      </Unit>
+      <Unit>
+        <Filename Value="tildadesigndoc.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="TildaDesignDoc"/>
+      </Unit>
+      <Unit>
+        <Filename Value="frametildadesignedit.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="TildaDesignEditFrame"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="FrameTildaDesignEdit"/>
+      </Unit>
+      <Unit>
+        <Filename Value="frametildadesignmodule.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="TildaDesignModuleFrame"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="FrameTildaDesignModule"/>
+      </Unit>
+      <Unit>
+        <Filename Value="tildadesignclasses.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="TildaDesignClasses"/>
+      </Unit>
+      <Unit>
+        <Filename Value="frametildadesignuintrf.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="TildaDesignUIntrfFrame"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="FrameTildaDesignUIntrf"/>
+      </Unit>
+      <Unit>
+        <Filename Value="tildadesignutils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="TildaDesignUtils"/>
+      </Unit>
+      <Unit>
+        <Filename Value="formtildadesignnewapp.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="TildaDesignNewAppForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="FormTildaDesignNewApp"/>
+      </Unit>
+      <Unit>
+        <Filename Value="frametildadesignsubitems.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="TildaDesignSubItemsFrame"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="FrameTildaDesignSubItems"/>
+      </Unit>
+      <Unit>
+        <Filename Value="formtildadesignaddsubitem.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="TildaDesignAddSubItemForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="FormTildaDesignAddSubItem"/>
+      </Unit>
+      <Unit>
+        <Filename Value="frametildadesignview.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="TildaDesignViewFrame"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="FrameTildaDesignView"/>
+      </Unit>
+      <Unit>
+        <Filename Value="formtildadesignscreen.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="TildaDesignScreenForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="FormTildaDesignScreen"/>
+      </Unit>
+      <Unit>
+        <Filename Value="formtildadesigneventref.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="TildaDesignEventRefForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="FormTildaDesignEventRef"/>
+      </Unit>
+      <Unit>
+        <Filename Value="formtildadesignselstate.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="TildaDesignSelStateForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="FormTildaDesignSelState"/>
+      </Unit>
+      <Unit>
+        <Filename Value="formtildadesignseloptions.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="TildaDesignSelOptionsForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="FormTildaDesignSelOptions"/>
+      </Unit>
+      <Unit>
+        <Filename Value="frametildadesignelem.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="TildaDesignElemFrame"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="FrameTildaDesignElem"/>
+      </Unit>
+      <Unit>
+        <Filename Value="formtildadesignselclr.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="TildaDesignSelClrForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="FormTildaDesignSelClr"/>
+      </Unit>
+      <Unit>
+        <Filename Value="frametildadesignpage.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="TildaDesignPageFrame"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="FrameTildaDesignPage"/>
+      </Unit>
+      <Unit>
+        <Filename Value="frametildadesignpanel.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="TildaDesignPanelFrame"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="FrameTildaDesignPanel"/>
+      </Unit>
+    </Units>
+  </ProjectOptions>
+  <CompilerOptions>
+    <Version Value="11"/>
+    <Target>
+      <Filename Value="TildaDesigner"/>
+    </Target>
+    <SearchPaths>
+      <IncludeFiles Value="$(ProjOutDir)"/>
+      <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
+    </SearchPaths>
+    <Linking>
+      <Debugging>
+        <DebugInfoType Value="dsDwarf2Set"/>
+      </Debugging>
+      <Options>
+        <Win32>
+          <GraphicApplication Value="True"/>
+        </Win32>
+      </Options>
+    </Linking>
+  </CompilerOptions>
+  <Debugging>
+    <Exceptions>
+      <Item>
+        <Name Value="EAbort"/>
+      </Item>
+      <Item>
+        <Name Value="ECodetoolError"/>
+      </Item>
+      <Item>
+        <Name Value="EFOpenError"/>
+      </Item>
+    </Exceptions>
+  </Debugging>
+</CONFIG>

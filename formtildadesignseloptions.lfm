@@ -1,0 +1,133 @@
+object TildaDesignSelOptionsForm: TTildaDesignSelOptionsForm
+  Left = 742
+  Height = 341
+  Top = 180
+  Width = 459
+  Caption = 'Select Options...'
+  ClientHeight = 341
+  ClientWidth = 459
+  LCLVersion = '2.2.0.4'
+  object Panel2: TPanel
+    Left = 8
+    Height = 37
+    Top = 296
+    Width = 443
+    Align = alBottom
+    BorderSpacing.Around = 8
+    BevelOuter = bvNone
+    ClientHeight = 37
+    ClientWidth = 443
+    TabOrder = 0
+    object BitBtn1: TBitBtn
+      Left = 352
+      Height = 30
+      Top = 0
+      Width = 91
+      Default = True
+      DefaultCaption = True
+      Kind = bkOK
+      ModalResult = 1
+      TabOrder = 0
+    end
+    object BitBtn2: TBitBtn
+      Left = 256
+      Height = 30
+      Top = 0
+      Width = 91
+      Cancel = True
+      DefaultCaption = True
+      Kind = bkCancel
+      ModalResult = 2
+      TabOrder = 1
+    end
+  end
+  object CheckBox1: TCheckBox
+    Left = 24
+    Height = 23
+    Top = 16
+    Width = 155
+    Caption = 'OPT_NOAUTOINVL'
+    OnChange = CheckBox1Change
+    TabOrder = 1
+  end
+  object CheckBox2: TCheckBox
+    Tag = 1
+    Left = 24
+    Height = 23
+    Top = 47
+    Width = 152
+    Caption = 'OPT_NONAVIGATE'
+    OnChange = CheckBox1Change
+    TabOrder = 2
+  end
+  object CheckBox3: TCheckBox
+    Tag = 2
+    Left = 24
+    Height = 23
+    Top = 80
+    Width = 166
+    Caption = 'OPT_NODOWNACTV'
+    OnChange = CheckBox1Change
+    TabOrder = 3
+  end
+  object CheckBox4: TCheckBox
+    Tag = 3
+    Left = 24
+    Height = 23
+    Top = 112
+    Width = 170
+    Caption = 'OPT_DOWNCAPTURE'
+    OnChange = CheckBox1Change
+    TabOrder = 4
+  end
+  object CheckBox5: TCheckBox
+    Tag = 4
+    Left = 24
+    Height = 23
+    Top = 144
+    Width = 145
+    Caption = 'OPT_AUTOCHECK'
+    OnChange = CheckBox1Change
+    TabOrder = 5
+  end
+  object CheckBox6: TCheckBox
+    Tag = 5
+    Left = 24
+    Height = 23
+    Top = 176
+    Width = 153
+    Caption = 'OPT_TEXTACCEL2X'
+    OnChange = CheckBox1Change
+    TabOrder = 6
+  end
+  object CheckBox7: TCheckBox
+    Tag = 6
+    Left = 24
+    Height = 23
+    Top = 208
+    Width = 164
+    Caption = 'OPT_TEXTCONTMRK'
+    OnChange = CheckBox1Change
+    TabOrder = 7
+  end
+  object CheckBox8: TCheckBox
+    Tag = 7
+    Left = 240
+    Height = 23
+    Top = 16
+    Width = 169
+    Caption = 'OPT_NOAUTOCHKOF'
+    OnChange = CheckBox1Change
+    TabOrder = 8
+  end
+  object CheckBox9: TCheckBox
+    Tag = 8
+    Left = 240
+    Height = 23
+    Top = 47
+    Width = 145
+    Caption = 'OPT_AUTOTRACK'
+    OnChange = CheckBox1Change
+    TabOrder = 9
+  end
+end
