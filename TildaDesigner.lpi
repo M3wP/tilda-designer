@@ -184,6 +184,42 @@
         <ResourceBaseClass Value="Frame"/>
         <UnitName Value="FrameTildaDesignPanel"/>
       </Unit>
+      <Unit>
+        <Filename Value="tildadesignpersist.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="TildaDesignPersist"/>
+      </Unit>
+      <Unit>
+        <Filename Value="frametildadesigntext.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="TildaDesignTextFrame"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="FrameTildaDesignText"/>
+      </Unit>
+      <Unit>
+        <Filename Value="frametildadesignevent.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="TildaDesignEventFrame"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="FrameTildaDesignEvent"/>
+      </Unit>
+      <Unit>
+        <Filename Value="frametildadesignctrl.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="TildaDesignCtrlFrame"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="FrameTildaDesignCtrl"/>
+      </Unit>
+      <Unit>
+        <Filename Value="formtildadesignabout.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="TildaDesignAboutForm"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="FormTildaDesignAbout"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -195,6 +231,11 @@
       <IncludeFiles Value="$(ProjOutDir)"/>
       <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
+    <Parsing>
+      <SyntaxOptions>
+        <SyntaxMode Value="Delphi"/>
+      </SyntaxOptions>
+    </Parsing>
     <Linking>
       <Debugging>
         <DebugInfoType Value="dsDwarf2Set"/>

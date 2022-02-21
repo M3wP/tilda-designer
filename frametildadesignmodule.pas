@@ -6,7 +6,8 @@ unit FrameTildaDesignModule;
 interface
 
 uses
-	Classes, SysUtils, Forms, Controls, Graphics, Dialogs, FrameTildaDesignEdit;
+	Classes, SysUtils, Forms, Controls, Graphics, Dialogs, TildaDesignClasses,
+	FrameTildaDesignEdit;
 
 type
 
@@ -20,7 +21,7 @@ type
 		procedure DoEditProp(const AProp: string; const AValue: string); override;
 		procedure DoSetItem; override;
 	public
-
+		class procedure RegisterEditor; override;
 	end;
 
 implementation
@@ -63,6 +64,15 @@ procedure TTildaDesignModuleFrame.DoSetItem;
 	ValueListEditor1.Strings.Add('name=' + TTildaModule(FItem).name);
 	ValueListEditor1.ItemProps['name'].MaxLength:= 16;
 	end;
+
+class procedure TTildaDesignModuleFrame.RegisterEditor;
+	begin
+	TTildaDesignClass.Create(TTildaModule, Self);
+	end;
+
+
+initialization
+	TTildaDesignModuleFrame.RegisterEditor
 
 end.
 

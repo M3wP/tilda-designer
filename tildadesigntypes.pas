@@ -6,7 +6,7 @@ unit TildaDesignTypes;
 interface
 
 uses
-	Classes, SysUtils, Generics.Collections, DOM;
+	Classes, SysUtils, Generics.Collections, DOM, TildaDesignPersist;
 
 const
 	VAL_SIZ_TILDA_BAR = 0;
@@ -51,28 +51,10 @@ type
  	TTildaAbstract = class;
 	TTildaAbstractClass = class of TTildaAbstract;
 
-	TTildaReference = class(TObject)
-		node: string;
-		abstract: TTildaAbstractClass;
-		ident: string;
-	end;
-
-	TTildaReferences = TList<TTildaReference>;
-	TTildaAbstractRefs = TDictionary<TTildaAbstract, TTildaReferences>;
-
 	{ TTildaAbstract }
 
- 	TTildaAbstract = class(TObject)
-		ident: string;
+ 	TTildaAbstract = class(TTildaPersistent)
 		refCount: Integer;
-
-		class function node: string; virtual; abstract;
-
-		procedure ReadFromNode(const ANode: TDomNode); virtual; abstract;
-		function  WriteToNode(const ADoc: TDomDocument): TDomElement; virtual;
-		procedure WriteToRefNode(const ADoc: TDomDocument;
-				const AParent: TDomElement); virtual;
-		procedure ApplyReference(const ARef: TTildaReference); virtual; abstract;
 
 		constructor Create(const AIdent: string);
 	end;
@@ -83,6 +65,8 @@ type
 
 	TTildaText = class(TTildaAbstract)
 		text: string;
+
+		procedure PersistState; override;
 
 		class function node: string; override;
 
@@ -98,6 +82,8 @@ type
 	TTildaEvent = class(TTildaAbstract)
 		kind: TTildaEventKind;
 		system: Boolean;
+
+		procedure PersistState; override;
 
 		class function node: string; override;
 
@@ -125,6 +111,8 @@ type
 		options: TTildaOptions;
 		tag: Word;
 
+		procedure PersistState; override;
+
 		class function size: Byte; virtual; abstract;
 
 		function  WriteToNode(const ADoc: TDomDocument): TDomElement; override;
@@ -132,8 +120,12 @@ type
 		constructor Create(const AIdent: string; const AParent: TTildaObject); virtual; 
 	end;
 
+	{ TTildaNamedObject }
+
 	TTildaNamedObject = class(TTildaObject)
 		name:	TTildaNameStr;
+
+		procedure PersistState; override;
 	end;
 
 	TTildaUnit = class(TTildaNamedObject);
@@ -143,8 +135,9 @@ type
 	{ TTildaModule }
 
  	TTildaModule = class(TTildaNamedObject)
-		name: TTildaNameStr;
 		units: TTildaUnits;
+
+		procedure PersistState; override;
 
 		class function size: Byte; override;
 		class function node: string; override;
@@ -163,13 +156,14 @@ type
 	{ TTildaUInterface }
 
  	TTildaUInterface = class(TTildaUnit)
-		name: TTildaNameStr;
 		mouseloc,
 		mptrloc: TTildaFarPointer;
 
 		mousepal: Byte;
 
 		views: TTildaViews;
+
+		procedure PersistState; override;
 
 		class function size: Byte; override;
 		class function node: string; override;
@@ -198,6 +192,8 @@ type
 		offset: Word;
 		transparent: Byte;
 		background: Byte;
+
+		procedure PersistState; override;
 
 		class function size: Byte; override;
 		class function node: string; override;
@@ -229,6 +225,8 @@ type
 
 		linelen: Word;
 
+		procedure PersistState; override;
+
 		class function size: Byte; override;
 		class function node: string; override;
 
@@ -255,6 +253,8 @@ type
 		width,
 		height: Byte;
 
+		procedure PersistState; override;
+
 		class function size: Byte; override;
 
 		constructor Create(const AIdent: string; const AParent: TTildaObject); override; 
@@ -271,6 +271,8 @@ type
 		layer: TTildaLayer;
 
 		controls: TTildaControls;
+
+		procedure PersistState; override;
 
 		class function size: Byte; override;
 		class function node: string; override;
@@ -289,6 +291,8 @@ type
 
  	TTildaBar = class(TTildaPanel)
 		position: Byte;
+
+		procedure PersistState; override;
 
 		class function size: Byte; override;
 		class function node: string; override;
@@ -313,6 +317,8 @@ type
 
 		panels: TTildaPanels;
 
+		procedure PersistState; override;
+
 		class function size: Byte; override;
 		class function node: string; override;
 
@@ -332,6 +338,8 @@ type
 		textaccel,
 		accelchar: Byte;
 
+		procedure PersistState; override;
+
 		class function size: Byte; override;
 		class function node: string; override;
 
@@ -345,7 +353,7 @@ type
 
 var
 //	colours: TTildaColours;
-	events: TTildaEvents;
+//	events: TTildaEvents;
 
 	abstracts: TTildaAbstracts;
 	abstractRefs: TTildaAbstractRefs;
@@ -354,7 +362,7 @@ var
 implementation
 
 uses
-	TildaDesignClasses;
+	TildaDesignClasses, TildaDesignUtils;
 
 //procedure PopulateSystemColours;
 //	var
@@ -435,16 +443,35 @@ procedure PopulateSystemEvents;
 		evt.kind:= ARR_REC_TILDA_SYSEVTS[i].k;
 		evt.system:= True;
 
-		events.Add(evt);
+//		events.Add(evt);
+		abstracts.Add(evt);
 		end;
 	end;
 
 function SystemEventByRecIndex(const AIndex: Integer): TTildaEvent;
 	begin
-	Result:= events[AIndex] as TTildaEvent;
+	Result:= FindByIdent(ARR_REC_TILDA_SYSEVTS[AIndex].i) as TTildaEvent;
+	end;
+
+{ TTildaNamedObject }
+
+procedure TTildaNamedObject.PersistState;
+	var
+	d: TTildaDataItem;
+
+	begin
+	inherited PersistState;
+
+	d:= TTildaDataItem.Create('name', tdtString, name);
+	persistData.Items[Self].Add(d);
 	end;
 
 { TTildaEvent }
+
+procedure TTildaEvent.PersistState;
+	begin
+
+	end;
 
 class function TTildaEvent.node: string;
 	begin
@@ -476,6 +503,17 @@ constructor TTildaEvent.Create(const AIdent: string);
 
 { TTildaText }
 
+procedure TTildaText.PersistState;
+	var
+	d: TTildaDataItem;
+
+	begin
+	inherited;
+
+	d:= TTildaDataItem.Create('text', tdtString, text);
+	persistData.Items[Self].Add(d);
+	end;
+
 class function TTildaText.node: string;
 	begin
 	Result:= 'Text';
@@ -506,10 +544,38 @@ constructor TTildaText.Create(const AIdent: string);
 	begin
 	inherited Create(AIdent);
 
+	mode:= tpmArray;
 	end;
 
 
 { TTildaControl }
+
+procedure TTildaControl.PersistState;
+	var
+	p: TTildaPersistent;
+	d: TTildaDataItem;
+	id: string;
+	i: Integer;
+
+	begin
+	inherited PersistState;
+
+	if  Assigned(text) then
+		id:= text.ident
+	else
+		id:= '';
+	d:= TTildaDataItem.Create('text_p', tdtFarRef, id);
+	persistData.Items[Self].Add(d);
+
+	d:= TTildaDataItem.Create('textoffx', tdtValue, IntToStr(textoffx));
+	persistData.Items[Self].Add(d);
+
+	d:= TTildaDataItem.Create('textaccel', tdtHexValue, IntToHex(textaccel, 2));
+	persistData.Items[Self].Add(d);
+
+	d:= TTildaDataItem.Create('accelchar', tdtValue, IntToStr(accelchar));
+	persistData.Items[Self].Add(d);
+	end;
 
 class function TTildaControl.size: Byte;
 	begin
@@ -568,6 +634,58 @@ destructor TTildaControl.Destroy;
 	end;
 
 { TTildaPage }
+
+procedure TTildaPage.PersistState;
+	var
+	p: TTildaPersistent;
+	d: TTildaDataItem;
+	id: string;
+	i: Integer;
+
+	begin
+	inherited PersistState;
+
+	if  Assigned(pagenxt) then
+		id:= pagenxt.ident
+	else
+		id:= '';
+	d:= TTildaDataItem.Create('pagenxt', tdtFarRef, id);
+	persistData.Items[Self].Add(d);
+
+	if  Assigned(pagebak) then
+		id:= pagebak.ident
+	else
+		id:= '';
+	d:= TTildaDataItem.Create('pagebak', tdtFarRef, id);
+	persistData.Items[Self].Add(d);
+
+	if  Assigned(text) then
+		id:= text.ident
+	else
+		id:= '';
+	d:= TTildaDataItem.Create('text_p', tdtFarRef, id);
+	persistData.Items[Self].Add(d);
+
+	d:= TTildaDataItem.Create('textoffx', tdtValue, IntToStr(textoffx));
+	persistData.Items[Self].Add(d);
+
+	p:= TTildaPersistent.Create(ident + '_panels', tpmArray);
+	persistTemp.Add(p);
+	p.PersistState;
+
+	d:= TTildaDataItem.Create('panels_p', tdtFarRef, p.ident);
+	persistData.Items[Self].Add(d);
+
+	d:= TTildaDataItem.Create('panelscnt', tdtValue, IntToStr(panels.Count));
+	persistData.Items[Self].Add(d);
+
+	for i:= 0 to panels.Count - 1 do
+		begin
+		d:= TTildaDataItem.Create('panels_p' + IntToStr(i), tdtFarRef,
+				panels[i].ident);
+		persistData.Items[p].Add(d);
+		end;
+	end;
 
 class function TTildaPage.size: Byte;
 	begin
@@ -646,6 +764,17 @@ destructor TTildaPage.Destroy;
 
 { TTildaBar }
 
+procedure TTildaBar.PersistState;
+	var
+	d: TTildaDataItem;
+
+	begin
+	inherited PersistState;
+
+	d:= TTildaDataItem.Create('position', tdtValue, IntToStr(position));
+	persistData.Items[Self].Add(d);
+	end;
+
 class function TTildaBar.size: Byte;
 	begin
 	Result:= VAL_SIZ_TILDA_BAR;
@@ -687,6 +816,41 @@ destructor TTildaBar.Destroy;
 	end;
 
 { TTildaPanel }
+
+procedure TTildaPanel.PersistState;
+	var
+	p: TTildaPersistent;
+	d: TTildaDataItem;
+	id: string;
+	i: Integer;
+
+	begin
+	inherited PersistState;
+
+	if  Assigned(layer) then
+		id:= layer.ident
+	else
+		id:= '';
+	d:= TTildaDataItem.Create('layer', tdtFarRef, id);
+	persistData.Items[Self].Add(d);
+
+	p:= TTildaPersistent.Create(ident + '_controls', tpmArray);
+	persistTemp.Add(p);
+	p.PersistState;
+
+	d:= TTildaDataItem.Create('controls_p', tdtFarRef, p.ident);
+	persistData.Items[Self].Add(d);
+
+	d:= TTildaDataItem.Create('controlscnt', tdtValue, IntToStr(controls.Count));
+	persistData.Items[Self].Add(d);
+
+	for i:= 0 to controls.Count - 1 do
+		begin
+		d:= TTildaDataItem.Create('controls_p' + IntToStr(i), tdtFarRef,
+				controls[i].ident);
+		persistData.Items[p].Add(d);
+		end;
+	end;
 
 class function TTildaPanel.size: Byte;
 	begin
@@ -751,6 +915,52 @@ destructor TTildaPanel.Destroy;
 
 { TTildaElement }
 
+procedure TTildaElement.PersistState;
+	var
+	d: TTildaDataItem;
+	id: string;
+
+	begin
+	inherited PersistState;
+
+	if  not Assigned(present) then
+		id:= ''
+	else
+		id:= present.ident;
+	d:= TTildaDataItem.Create('present', tdtEventRef, id);
+	persistData.Items[Self].Add(d);
+
+	if  not Assigned(keypress) then
+		id:= ''
+	else
+		id:= keypress.ident;
+	d:= TTildaDataItem.Create('keypress', tdtEventRef, id);
+	persistData.Items[Self].Add(d);
+
+	if  Assigned(owner) then
+		id:= owner.ident
+	else
+		id:= '';
+	d:= TTildaDataItem.Create('owner', tdtFarRef, id);
+	persistData.Items[Self].Add(d);
+
+	if  (Ord(colour) and $FF00) <> 0 then
+		d:= TTildaDataItem.Create('colour', tdtHexValue, ColourToString(colour))
+	else
+		d:= TTildaDataItem.Create('colour', tdtValue, ColourToString(colour));
+	persistData.Items[Self].Add(d);
+
+	d:= TTildaDataItem.Create('posx', tdtValue, IntToStr(posx));
+	persistData.Items[Self].Add(d);
+	d:= TTildaDataItem.Create('posy', tdtValue, IntToStr(posy));
+	persistData.Items[Self].Add(d);
+	d:= TTildaDataItem.Create('width', tdtValue, IntToStr(width));
+	persistData.Items[Self].Add(d);
+	d:= TTildaDataItem.Create('height', tdtValue, IntToStr(height));
+	persistData.Items[Self].Add(d);
+
+	end;
+
 class function TTildaElement.size: Byte;
 	begin
 	Result:= VAL_SIZ_TILDA_ELEM;
@@ -768,6 +978,27 @@ destructor TTildaElement.Destroy;
 	end;
 
 { TTildaLayer }
+
+procedure TTildaLayer.PersistState;
+	var
+	d: TTildaDataItem;
+
+	begin
+	inherited PersistState;
+
+	d:= TTildaDataItem.Create('width', tdtValue, IntToStr(width));
+	persistData.Items[Self].Add(d);
+
+	d:= TTildaDataItem.Create('offset', tdtValue, IntToStr(offset));
+	persistData.Items[Self].Add(d);
+
+	d:= TTildaDataItem.Create('transparent', tdtValue, IntToStr(transparent));
+	persistData.Items[Self].Add(d);
+
+	d:= TTildaDataItem.Create('background', tdtValue, IntToStr(background));
+	persistData.Items[Self].Add(d);
+
+	end;
 
 class function TTildaLayer.size: Byte;
 	begin
@@ -816,6 +1047,87 @@ destructor TTildaLayer.Destroy;
 	end;
 
 { TTildaView }
+
+procedure TTildaView.PersistState;
+	var
+	p: TTildaPersistent;
+	d: TTildaDataItem;
+	i: Integer;
+	id: string;
+
+	begin
+	inherited PersistState;
+
+	d:= TTildaDataItem.Create('width', tdtValue, IntToStr(width));
+	persistData.Items[Self].Add(d);
+	d:= TTildaDataItem.Create('height', tdtValue, IntToStr(height));
+	persistData.Items[Self].Add(d);
+
+	d:= TTildaDataItem.Create('location', tdtFarPtr, IntToHex(location, 8));
+	persistData.Items[Self].Add(d);
+
+	d:= TTildaDataItem.Create('cellsize', tdtValue, IntToStr(cellsize));
+	persistData.Items[Self].Add(d);
+
+	d:= TTildaDataItem.Create('layers_p', tdtFarRef, ident + '_layers');
+	persistData.Items[Self].Add(d);
+	d:= TTildaDataItem.Create('layerscnt', tdtValue, IntToStr(layers.Count));
+	persistData.Items[Self].Add(d);
+
+	p:= TTildaPersistent.Create(ident + '_layers', tpmArray);
+	persistTemp.Add(p);
+	p.PersistState;
+
+	for i:= 0 to layers.Count - 1 do
+		begin
+		d:= TTildaDataItem.Create('layers_p' + IntToStr(i), tdtFarRef,
+				layers[i].ident);
+		persistData.Items[p].Add(d);
+		end;
+
+	d:= TTildaDataItem.Create('bars_p', tdtFarRef, ident + '_bars');
+	persistData.Items[Self].Add(d);
+	d:= TTildaDataItem.Create('barscnt', tdtValue, IntToStr(bars.Count));
+	persistData.Items[Self].Add(d);
+
+	p:= TTildaPersistent.Create(ident + '_bars', tpmArray);
+	persistTemp.Add(p);
+	p.PersistState;
+
+	for i:= 0 to bars.Count - 1 do
+		begin
+		d:= TTildaDataItem.Create('bars_p' + IntToStr(i), tdtFarRef,
+				bars[i].ident);
+		persistData.Items[p].Add(d);
+		end;
+
+	if  Assigned(actvpage) then
+		id:= actvpage.ident
+	else
+		id:= '';
+	d:= TTildaDataItem.Create('actvpage', tdtFarRef, id);
+	persistData.Items[Self].Add(d);
+
+
+	d:= TTildaDataItem.Create('pages_p', tdtFarRef, ident + '_pages');
+	persistData.Items[Self].Add(d);
+	d:= TTildaDataItem.Create('pagescnt', tdtValue, IntToStr(pages.Count));
+	persistData.Items[Self].Add(d);
+
+	p:= TTildaPersistent.Create(ident + '_pages', tpmArray);
+	persistTemp.Add(p);
+	p.PersistState;
+
+	for i:= 0 to pages.Count - 1 do
+		begin
+		d:= TTildaDataItem.Create('pages_p' + IntToStr(i), tdtFarRef,
+				pages[i].ident);
+		persistData.Items[p].Add(d);
+		end;
+
+	d:= TTildaDataItem.Create('linelen', tdtValue, IntToStr(linelen));
+	persistData.Items[Self].Add(d);
+	end;
 
 class function TTildaView.size: Byte;
 	begin
@@ -898,6 +1210,41 @@ destructor TTildaView.Destroy;
 
 { TTildaUInterface }
 
+procedure TTildaUInterface.PersistState;
+	var
+	p: TTildaPersistent;
+	d: TTildaDataItem;
+	i: Integer;
+
+	begin
+	inherited PersistState;
+
+	d:= TTildaDataItem.Create('mouseloc', tdtFarPtr, IntToHex(mouseloc, 8));
+	persistData.Items[Self].Add(d);
+
+	d:= TTildaDataItem.Create('mptrloc', tdtFarPtr, IntToHex(mptrloc, 8));
+	persistData.Items[Self].Add(d);
+
+	d:= TTildaDataItem.Create('mousepal', tdtValue, IntToStr(mousepal));
+	persistData.Items[Self].Add(d);
+
+	d:= TTildaDataItem.Create('views_p', tdtFarRef, ident + '_views');
+	persistData.Items[Self].Add(d);
+	d:= TTildaDataItem.Create('viewscnt', tdtValue, IntToStr(views.Count));
+	persistData.Items[Self].Add(d);
+
+	p:= TTildaPersistent.Create(ident + '_views', tpmArray);
+	persistTemp.Add(p);
+	p.PersistState;
+
+	for i:= 0 to views.Count - 1 do
+		begin
+		d:= TTildaDataItem.Create('views_p' + IntToStr(i), tdtFarRef,
+				views[i].ident);
+		persistData.Items[p].Add(d);
+		end;
+	end;
+
 class function TTildaUInterface.size: Byte;
 	begin
 	Result:= VAL_SIZ_TILDA_UINT;
@@ -960,6 +1307,32 @@ destructor TTildaUInterface.Destroy;
 
 { TTildaModule }
 
+procedure TTildaModule.PersistState;
+	var
+	p: TTildaPersistent;
+	d: TTildaDataItem;
+	i: Integer;
+
+	begin
+	inherited PersistState;
+
+	d:= TTildaDataItem.Create('units_p', tdtFarRef, ident + '_units');
+	persistData.Items[Self].Add(d);
+	d:= TTildaDataItem.Create('unitscnt', tdtValue, IntToStr(units.Count));
+	persistData.Items[Self].Add(d);
+
+	p:= TTildaPersistent.Create(ident + '_units', tpmArray);
+	persistTemp.Add(p);
+	p.PersistState;
+
+	for i:= 0 to units.Count - 1 do
+		begin
+		d:= TTildaDataItem.Create('units_p' + IntToStr(i), tdtFarRef,
+				units[i].ident);
+		persistData.Items[p].Add(d);
+		end;
+	end;
+
 class function TTildaModule.size: Byte;
 	begin
 	Result:= VAL_SIZ_TILDA_MODL;
@@ -1017,6 +1390,65 @@ destructor TTildaModule.Destroy;
 
 { TTildaObject }
 
+procedure TTildaObject.PersistState;
+	var
+	d: TTildaDataItem;
+	id: string;
+
+	begin
+	inherited;
+
+	d:= TTildaDataItem.Create('size', tdtSize, IntToStr(size));
+	persistData.Items[Self].Add(d);
+
+	if  Assigned(parent) then
+		id:= parent.ident
+	else
+		id:= '';
+	d:= TTildaDataItem.Create('parent', tdtFarRef, id);
+	persistData.Items[Self].Add(d);
+
+	if  not Assigned(prepare) then
+		id:= ''
+	else
+		id:= prepare.ident;
+	d:= TTildaDataItem.Create('prepare', tdtEventRef, id);
+	persistData.Items[Self].Add(d);
+
+	if  not Assigned(initialise) then
+		id:= ''
+	else
+		id:= initialise.ident;
+	d:= TTildaDataItem.Create('initialise', tdtEventRef, id);
+	persistData.Items[Self].Add(d);
+
+	if  not Assigned(change) then
+		id:= ''
+	else
+		id:= change.ident;
+	d:= TTildaDataItem.Create('change', tdtEventRef, id);
+	persistData.Items[Self].Add(d);
+
+	if  not Assigned(release) then
+		id:= ''
+	else
+		id:= release.ident;
+	d:= TTildaDataItem.Create('release', tdtEventRef, id);
+	persistData.Items[Self].Add(d);
+
+	d:= TTildaDataItem.Create('state', tdtHexValue, StateToHex(state));
+	persistData.Items[Self].Add(d);
+
+	d:= TTildaDataItem.Create('oldstate', tdtHexValue, StateToHex(oldState));
+	persistData.Items[Self].Add(d);
+
+	d:= TTildaDataItem.Create('options', tdtHexValue, OptionsToHex(options));
+	persistData.Items[Self].Add(d);
+
+	d:= TTildaDataItem.Create('tag', tdtValue, IntToStr(tag));
+	persistData.Items[Self].Add(d);
+	end;
+
 function TTildaObject.WriteToNode(const ADoc: TDomDocument): TDomElement;
 	begin
 	Result:= inherited WriteToNode(ADoc);
@@ -1032,30 +1464,11 @@ constructor TTildaObject.Create(const AIdent: string;
 	parent:= AParent;
 
 	state:= [tskVisible, tskEnabled];
+
+	mode:= tpmStruct;
 	end;
 
 { TTildaAbstract }
-
-function TTildaAbstract.WriteToNode(const ADoc: TDomDocument): TDomElement;
-	begin
-	Result:= ADoc.CreateElement(node);
-
-	Result.SetAttribute('ident', ident);
-	end;
-
-procedure TTildaAbstract.WriteToRefNode(const ADoc: TDomDocument;
-		const AParent: TDomElement);
-	var
-	n: TDomElement;
-
-	begin
-	n:= ADoc.CreateElement('Ref');
-
-	n.SetAttribute('node', node);
-	n.SetAttribute('ident', ident);
-
-	AParent.AppendChild(n);
-	end;
 
 constructor TTildaAbstract.Create(const AIdent: string);
 	begin
@@ -1065,7 +1478,7 @@ constructor TTildaAbstract.Create(const AIdent: string);
 
 initialization
 //	colours:= TTildaColours.Create;
-	events:= TTildaEvents.Create;
+//	events:= TTildaEvents.Create;
 
 	abstracts:= TTildaAbstracts.Create;
 	abstractRefs:= TTildaAbstractRefs.Create;

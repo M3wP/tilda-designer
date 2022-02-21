@@ -1,6 +1,7 @@
 unit FrameTildaDesignSubItems;
 
-{$mode ObjFPC}{$H+}
+{$mode Delphi}
+{$H+}
 
 interface
 
@@ -16,6 +17,7 @@ type
 	TRemoveItemEvent = procedure (const AIndex: Integer) of object;
 
 	TTildaDesignSubItemsFrame = class(TFrame)
+		ImageList1: TImageList;
 		Label1: TLabel;
 		ToolBar1: TToolBar;
 		ToolButton1: TToolButton;

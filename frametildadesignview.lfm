@@ -29,9 +29,6 @@ inherited TildaDesignViewFrame: TTildaDesignViewFrame
       TabOrder = 1
       inherited ToolBar1: TToolBar
         Width = 296
-        inherited ToolButton3: TToolButton
-          Height = 22
-        end
       end
       inherited VirtualStringTree1: TVirtualStringTree
         Height = 69
@@ -52,9 +49,6 @@ inherited TildaDesignViewFrame: TTildaDesignViewFrame
       TabOrder = 2
       inherited ToolBar1: TToolBar
         Width = 296
-        inherited ToolButton3: TToolButton
-          Height = 22
-        end
       end
       inherited VirtualStringTree1: TVirtualStringTree
         Height = 69
@@ -75,9 +69,6 @@ inherited TildaDesignViewFrame: TTildaDesignViewFrame
       TabOrder = 3
       inherited ToolBar1: TToolBar
         Width = 296
-        inherited ToolButton3: TToolButton
-          Height = 22
-        end
       end
       inherited VirtualStringTree1: TVirtualStringTree
         Height = 133

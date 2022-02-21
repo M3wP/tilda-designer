@@ -1,6 +1,7 @@
 unit FrameTildaDesignPanel;
 
-{$mode ObjFPC}{$H+}
+{$mode Delphi}
+{$H+}
 
 interface
 
@@ -27,6 +28,8 @@ type
 		procedure DoEditProp(const AProp: string; const AValue: string); override;
 		procedure DoSetItem; override;
 	public
+		class procedure RegisterEditor; override;
+
 		constructor Create(AOwner: TComponent); override;
 	end;
 
@@ -35,7 +38,7 @@ implementation
 {$R *.lfm}
 
 uses
-	FormTildaDesignAddSubItem;
+	FormTildaDesignAddSubItem, TildaDesignClasses;
 
 { TTildaDesignPanelFrame }
 
@@ -113,10 +116,19 @@ procedure TTildaDesignPanelFrame.DoSetItem;
 	subItemsControls.ItemCount:= p.controls.Count;
 	end;
 
+class procedure TTildaDesignPanelFrame.RegisterEditor;
+	begin
+	TTildaDesignClass.Create(TTildaPanel, Self);
+	end;
+
 constructor TTildaDesignPanelFrame.Create(AOwner: TComponent);
 	begin
 	inherited Create(AOwner);
 	end;
+
+
+initialization
+	TTildaDesignPanelFrame.RegisterEditor;
 
 end.
 

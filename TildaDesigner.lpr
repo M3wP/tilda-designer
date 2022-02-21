@@ -1,6 +1,7 @@
 program TildaDesigner;
 
-{$mode objfpc}{$H+}
+{$mode Delphi}
+{$H+}
 
 uses
   {$IFDEF UNIX}
@@ -16,7 +17,9 @@ FrameTildaDesignUIntrf, TildaDesignUtils, FormTildaDesignNewApp,
 FrameTildaDesignSubItems, FormTildaDesignAddSubItem, FrameTildaDesignView, 
 FormTildaDesignScreen, FormTildaDesignEventRef, FormTildaDesignSelState, 
 FormTildaDesignSelOptions, FrameTildaDesignElem, FormTildaDesignSelClr, 
-FrameTildaDesignPage, FrameTildaDesignPanel
+FrameTildaDesignPage, FrameTildaDesignPanel, TildaDesignPersist, 
+FrameTildaDesignText, FrameTildaDesignEvent, FrameTildaDesignCtrl, 
+FormTildaDesignAbout
   { you can add units after this };
 
 {$R *.res}
@@ -35,6 +38,7 @@ begin
 	Application.CreateForm(TTildaDesignSelOptionsForm, TildaDesignSelOptionsForm
 		);
 	Application.CreateForm(TTildaDesignSelClrForm, TildaDesignSelClrForm);
+	Application.CreateForm(TTildaDesignAboutForm, TildaDesignAboutForm);
   Application.Run;
 end.
 

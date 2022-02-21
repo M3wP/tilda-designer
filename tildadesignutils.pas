@@ -9,6 +9,7 @@ uses
 	Classes, SysUtils, ValEdit, TildaDesignTypes;
 
 
+function  HexToDWord(const AHex: string): Cardinal;
 function  FirstByClass(const AClass: TTildaAbstractClass): TTildaAbstract;
 function  FindByIdent(const AIdent: string): TTildaAbstract;
 function  IsValidIdent(const AValue: string): Boolean;
@@ -25,6 +26,27 @@ implementation
 uses
 	Controls, FormTildaDesignEventRef;
 
+
+function  HexToDWord(const AHex: string): Cardinal;
+	var
+	buf: array[0..7] of AnsiChar;
+	val: array[0..7] of AnsiChar;
+
+	begin
+	val:= Copy(AnsiString(AHex), 2, 8);
+	if  HexToBin(val, buf, 8) = 4 then
+		begin
+//!!!FIXME This is little endian only
+		Result:= (Byte(buf[0]) shl 24) or (Byte(buf[1]) shl 16) or
+				(Byte(buf[2]) shl 8) or Byte(buf[3]);
+
+//		if  IntToHex(Result, 8) <> val then
+//			raise Exception.Create('blah');
+
+		end
+	else
+		Result:= $FFFFFFFF;
+	end;
 
 procedure EditorAddItemEvent(const AEditor: TValueListEditor;
 		const AProp: string; const AEvent: TTildaAbstract);
@@ -54,7 +76,7 @@ function TestLookupEventProp(const AProp, ATest: string;
 		else
 			begin
 			AEvent:= nil;
-			ANewValue:= '';
+//			ANewValue:= '';
 			end;
 		end;
 	end;

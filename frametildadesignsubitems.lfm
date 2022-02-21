@@ -5,7 +5,6 @@ object TildaDesignSubItemsFrame: TTildaDesignSubItemsFrame
   Width = 320
   ClientHeight = 240
   ClientWidth = 320
-  LCLVersion = '2.2.0.4'
   TabOrder = 0
   DesignLeft = 657
   DesignTop = 334
@@ -17,11 +16,13 @@ object TildaDesignSubItemsFrame: TTildaDesignSubItemsFrame
     BorderSpacing.Left = 8
     BorderSpacing.Right = 8
     Caption = 'ToolBar1'
+    Images = ImageList1
     TabOrder = 0
     object ToolButton1: TToolButton
       Left = 1
       Top = 2
       Caption = 'ToolButton1'
+      ImageIndex = 0
       OnClick = ToolButton1Click
     end
     object ToolButton2: TToolButton
@@ -31,7 +32,7 @@ object TildaDesignSubItemsFrame: TTildaDesignSubItemsFrame
     end
     object ToolButton3: TToolButton
       Left = 24
-      Height = 8
+      Height = 22
       Top = 2
       Caption = 'ToolButton3'
       Style = tbsSeparator
@@ -61,5 +62,18 @@ object TildaDesignSubItemsFrame: TTildaDesignSubItemsFrame
     BorderSpacing.Left = 8
     BorderSpacing.Right = 8
     Caption = 'Label1'
+  end
+  object ImageList1: TImageList
+    Left = 280
+    Top = 8
+    Bitmap = {
+      4C7A010000001000000010000000C80000000000000078DA636018B6C0553D5B
+      FFBF7C90CA7F205B950CFD691EC7C37F1B955981F41B93A5FF2885FA8F84FD36
+      2A215ABFBC9497C22FE504ADFF601CAFF5DFE76CF45FFBF95EFF14A2D4FECB85
+      ABFC970955FECFA3CAFF1E877E63E78D01FF824F26FE0F3E91F83FE858C2FFC0
+      B309FFFD0FC7FCF7DE1DF1DF7D5BC87FA0FC7F0907D99F38F40B81DC8C84173B
+      ECF4FFAD9B670A727F2B92B83BB1FEB7DDE2FD5B3BDB88ECF0B3DCE0FE5B2343
+      9F6CFDA6731CFFAAC46A81F46B90A15F0D88670271FE60CE240035E550C2
+    }
   end
 end

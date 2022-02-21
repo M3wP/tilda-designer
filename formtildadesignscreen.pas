@@ -154,7 +154,12 @@ procedure TTildaDesignScreenForm.PaintInterface;
 	FillRegion(Rect(0, 0, 700, 460), theme^.Data[Ord(tckEmpty)]);
 
 	ui:= FirstByClass(TTildaUInterface) as TTildaUInterface;
+	if  not Assigned(ui) then
+		Exit;
+
 	vw:= ui.views[0];
+	if  not Assigned(vw) then
+		Exit;
 
 	if  vw.width = 80 then
 		cellsz.x:= 8

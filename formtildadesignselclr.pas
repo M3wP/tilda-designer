@@ -1,6 +1,7 @@
 unit FormTildaDesignSelClr;
 
-{$mode ObjFPC}{$H+}
+{$mode Delphi}
+{$H+}
 
 interface
 

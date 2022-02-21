@@ -38,6 +38,8 @@ type
 		procedure DoEditProp(const AProp: string; const AValue: string); override;
 		procedure DoSetItem; override;
 	public
+		class procedure RegisterEditor; override;
+
 		constructor Create(AOwner: TComponent); override;
 	end;
 
@@ -46,7 +48,7 @@ implementation
 {$R *.lfm}
 
 uses
-	FormTildaDesignAddSubItem;
+	FormTildaDesignAddSubItem, TildaDesignClasses, TildaDesignUtils;
 
 { TTildaDesignViewFrame }
 
@@ -127,8 +129,25 @@ procedure TTildaDesignViewFrame.PagesRemoveItem(const AIndex: Integer);
 
 procedure TTildaDesignViewFrame.DoValidateProp(const AProp: string;
 		const AOldValue: string; var ANewValue: string);
+	var
+	v: Integer;
+
 	begin
-	inherited DoValidateProp(AProp, AOldValue, ANewValue);
+	if  (CompareText('width', AProp) = 0)
+	or  (CompareText('height', AProp) = 0) then
+		begin
+		if  not TryStrToInt(ANewValue, v) then
+			ANewValue:= AOldValue;
+		end
+	else if CompareText('cellsize', AProp) = 0 then
+		begin
+		if  not TryStrToInt(ANewValue, v) then
+			ANewValue:= AOldValue
+		else if (v <> 1) or (v <> 2) then
+			ANewValue:= AOldValue;
+		end
+	else
+		inherited DoValidateProp(AProp, AOldValue, ANewValue);
 	end;
 
 procedure TTildaDesignViewFrame.DoLookupProp(const AProp: string;
@@ -155,7 +174,16 @@ procedure TTildaDesignViewFrame.DoLookupProp(const AProp: string;
 procedure TTildaDesignViewFrame.DoEditProp(const AProp: string;
 		const AValue: string);
 	begin
-	inherited DoEditProp(AProp, AValue);
+	if  CompareText('width', AProp) = 0 then
+		TTildaView(FItem).width:= StrToInt(AValue)
+	else if  CompareText('height', AProp) = 0 then
+		TTildaView(FItem).height:= StrToInt(AValue)
+	else if  CompareText('location', AProp) = 0 then
+		TTildaView(FItem).location:= HexToDWord(AValue)
+	else if  CompareText('cellsize', AProp) = 0 then
+		TTildaView(FItem).cellsize:= StrToInt(AValue)
+	else
+		inherited DoEditProp(AProp, AValue);
 	end;
 
 procedure TTildaDesignViewFrame.DoSetItem;
@@ -171,6 +199,11 @@ procedure TTildaDesignViewFrame.DoSetItem;
 	ValueListEditor1.Strings.Add('height=' + IntToStr(v.height));
 	ValueListEditor1.Strings.Add('location=$' + IntToHex(v.location, 8));
 
+	ValueListEditor1.ItemProps['location'].EditStyle:= esSimple;
+	ValueListEditor1.ItemProps['location'].EditMask:= '\$HHHHHHHH';
+
+	ValueListEditor1.Strings.Add('cellsize=' + IntToStr(v.cellsize));
+
 	if  Assigned(v.actvpage) then
 		ValueListEditor1.Strings.Add('actvpage=' + v.actvpage.ident)
 	else
@@ -182,6 +215,11 @@ procedure TTildaDesignViewFrame.DoSetItem;
 	subItemsLayers.ItemCount:= v.layers.Count;
 	subItemsBars.ItemCount:= v.bars.Count;
 	subItemsPages.ItemCount:= v.pages.Count;
+	end;
+
+class procedure TTildaDesignViewFrame.RegisterEditor;
+	begin
+	TTildaDesignClass.Create(TTildaView, Self);
 	end;
 
 constructor TTildaDesignViewFrame.Create(AOwner: TComponent);
@@ -203,6 +241,10 @@ constructor TTildaDesignViewFrame.Create(AOwner: TComponent);
 	subItemsPages.OnGetText:= PagesGetItemText;
 	subItemsPages.OnRemoveItem:= PagesRemoveItem;
 	end;
+
+
+initialization
+	TTildaDesignViewFrame.RegisterEditor;
 
 end.
 

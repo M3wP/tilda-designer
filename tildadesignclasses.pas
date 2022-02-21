@@ -21,9 +21,15 @@ const
 			'OPT_TEXTCONTMRK', 'OPT_NOAUTOCHKOF', 'OPT_AUTOTRACK');
 
 type
-	TTildaDesignClass = class(TObject)
+
+	{ TTildaDesignClass }
+
+ TTildaDesignClass = class(TObject)
 		itemClass: TTildaAbstractClass;
 		editor:  TTildaDesignEditFrameClass;
+
+		constructor Create(const AClass: TTildaAbstractClass;
+			const AEditor: TTildaDesignEditFrameClass);
 	end;
 
 	TTildaDesignClasses = TList<TTildaDesignClass>;
@@ -43,7 +49,7 @@ implementation
 
 uses
 	FrameTildaDesignModule, FrameTildaDesignUIntrf, FrameTildaDesignView,
-	FrameTildaDesignElem, FrameTildaDesignPage, FrameTildaDesignPanel;
+	FrameTildaDesignPage, FrameTildaDesignPanel;
 
 
 const
@@ -124,41 +130,24 @@ function  EditorForClass(const AClass: TTildaAbstractClass): TTildaDesignEditFra
 			end;
 	end;
 
-procedure RegisterItemClasses;
-	var
-	cd: TTildaDesignClass;
+{ TTildaDesignClass }
 
+constructor TTildaDesignClass.Create(const AClass: TTildaAbstractClass;
+		const AEditor: TTildaDesignEditFrameClass);
 	begin
-	cd:= TTildaDesignClass.Create;
-	cd.itemClass:= TTildaModule;
-	cd.editor:= TTildaDesignModuleFrame;
-	classEditors.Add(cd);
+	itemClass:= AClass;
+	editor:= AEditor;
 
-	cd:= TTildaDesignClass.Create;
-	cd.itemClass:= TTildaUInterface;
-	cd.editor:= TTildaDesignUIntrfFrame;
-	classEditors.Add(cd);
+	if  not Assigned(classEditors) then
+		classEditors:= TTildaDesignClasses.Create;
 
-	cd:= TTildaDesignClass.Create;
-	cd.itemClass:= TTildaView;
-	cd.editor:= TTildaDesignViewFrame;
-	classEditors.Add(cd);
-
-	cd:= TTildaDesignClass.Create;
-	cd.itemClass:= TTildaPage;
-	cd.editor:= TTildaDesignPageFrame;
-	classEditors.Add(cd);
-
-	cd:= TTildaDesignClass.Create;
-	cd.itemClass:= TTildaPanel;
-	cd.editor:= TTildaDesignPanelFrame;
-	classEditors.Add(cd);
+	classEditors.Add(Self);
 	end;
 
-initialization
-	classEditors:= TTildaDesignClasses.Create;
 
-	RegisterItemClasses;
+initialization
+	if  not Assigned(classEditors) then
+		classEditors:= TTildaDesignClasses.Create;
 
 finalization
 

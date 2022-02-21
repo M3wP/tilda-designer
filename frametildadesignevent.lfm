@@ -1,4 +1,6 @@
-inherited TildaDesignUIntrfFrame: TTildaDesignUIntrfFrame
+inherited TildaDesignEventFrame: TTildaDesignEventFrame
+  DesignLeft = 1087
+  DesignTop = 278
   inherited ScrollBox1: TScrollBox
     inherited ValueListEditor1: TValueListEditor
       ColWidths = (

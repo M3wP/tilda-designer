@@ -1,11 +1,12 @@
 unit FormTildaDesignAddSubItem;
 
-{$mode ObjFPC}{$H+}
+{$mode Delphi}
+{$H+}
 
 interface
 
 uses
-	Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
+	Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls,
 	Buttons, VirtualTrees, TildaDesignTypes;
 
 type
@@ -18,7 +19,7 @@ type
 		Panel2: TPanel;
 		VirtualStringTree1: TVirtualStringTree;
 		procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-  procedure FormCreate(Sender: TObject);
+ 		procedure FormCreate(Sender: TObject);
 		procedure VirtualStringTree1Change(Sender: TBaseVirtualTree;
 			Node: PVirtualNode);
 		procedure VirtualStringTree1GetText(Sender: TBaseVirtualTree;

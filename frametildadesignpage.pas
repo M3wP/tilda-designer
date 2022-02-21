@@ -13,7 +13,7 @@ type
 
 	{ TTildaDesignPageFrame }
 
- TTildaDesignPageFrame = class(TTildaDesignElemFrame)
+	TTildaDesignPageFrame = class(TTildaDesignElemFrame)
 		subitemsPanels: TTildaDesignSubItemsFrame;
 	private
 		procedure PanelsGetItemText(const AIndex: Integer; out AText: string);
@@ -28,6 +28,8 @@ type
 		procedure DoEditProp(const AProp: string; const AValue: string); override;
 		procedure DoSetItem; override;
 	public
+		class procedure RegisterEditor; override;
+
 		constructor Create(AOwner: TComponent); override;
 	end;
 
@@ -37,7 +39,7 @@ implementation
 {$R *.lfm}
 
 uses
-	FormTildaDesignAddSubItem;
+	FormTildaDesignAddSubItem, TildaDesignClasses;
 
 { TTildaDesignPageFrame }
 
@@ -144,6 +146,11 @@ procedure TTildaDesignPageFrame.DoSetItem;
 	subItemsPanels.ItemCount:= p.panels.Count;
 	end;
 
+class procedure TTildaDesignPageFrame.RegisterEditor;
+	begin
+	TTildaDesignClass.Create(TTildaPage, Self);
+	end;
+
 constructor TTildaDesignPageFrame.Create(AOwner: TComponent);
 	begin
 	inherited Create(AOwner);
@@ -153,6 +160,10 @@ constructor TTildaDesignPageFrame.Create(AOwner: TComponent);
 	subItemsPanels.OnGetText:= PanelsGetItemText;
 	subItemsPanels.OnRemoveItem:= PanelsRemoveItem;
 	end;
+
+
+initialization
+	TTildaDesignPageFrame.RegisterEditor;
 
 end.
 

@@ -76,11 +76,19 @@ function TTildaDesignEventRefForm.ShowSelEventRef(
 	begin
 	FItems.Clear;
 
+	FSelected:= nil;
+	VirtualStringTree1.RootNodeCount:= 0;
+
 	FItems.Add(nil);
 
-	for i:= 0 to events.Count - 1 do
-		if  events[i].kind = AKind then
-			FItems.Add(events[i]);
+	//for i:= 0 to events.Count - 1 do
+	//	if  events[i].kind = AKind then
+	//		FItems.Add(events[i]);
+
+	for i:= 0 to abstracts.Count - 1 do
+		if  (abstracts[i] is TTildaEvent)
+		and (TTildaEvent(abstracts[i]).kind = AKind) then
+			FItems.Add(abstracts[i]);
 
 	VirtualStringTree1.RootNodeCount:= FItems.Count;
 

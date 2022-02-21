@@ -38,6 +38,8 @@ type
 		procedure DoSetItem; virtual;
 
 	public
+		class procedure RegisterEditor; virtual; abstract;
+
 		procedure SetItem(const AItem: TTildaAbstract);
 
 		property Item: TTildaAbstract read FItem;
@@ -99,6 +101,7 @@ procedure TTildaDesignEditFrame.ValueListEditor1ButtonClick(Sender: TObject;
 	begin
 	p:= ValueListEditor1.Keys[ValueListEditor1.Selection.Top];
 	o:= ValueListEditor1.Values[p];
+	n:= o;
 
 	DoLookupProp(p, o, n);
 
