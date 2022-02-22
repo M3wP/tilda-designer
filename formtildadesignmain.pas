@@ -17,6 +17,8 @@ type
 	TTildaDesignMainForm = class(TForm)
 		actFileGenC: TAction;
 		actHelpAbout: TAction;
+		actFileSave: TAction;
+		actFileOpen: TAction;
 		actObjNewText: TAction;
 		actObjNewPanel: TAction;
 		actObjNewPage: TAction;
@@ -36,6 +38,8 @@ type
 		MenuItem7: TMenuItem;
 		MenuItem8: TMenuItem;
 		MenuItem9: TMenuItem;
+		OpenDialog1: TOpenDialog;
+		SaveDialog1: TSaveDialog;
 		SelectDirectoryDialog1: TSelectDirectoryDialog;
 		Separator1: TMenuItem;
 		Panel1: TPanel;
@@ -61,6 +65,8 @@ type
 		VirtualStringTree1: TVirtualStringTree;
 		procedure actFileGenCExecute(Sender: TObject);
 		procedure actFileNewAppExecute(Sender: TObject);
+		procedure actFileOpenExecute(Sender: TObject);
+		procedure actFileSaveExecute(Sender: TObject);
 		procedure actHelpAboutExecute(Sender: TObject);
 		procedure actObjNewPageExecute(Sender: TObject);
 		procedure actObjNewPanelExecute(Sender: TObject);
@@ -111,8 +117,9 @@ implementation
 {$R *.lfm}
 
 uses
-	TildaDesignPersist, TildaDesignDoc, TildaDesignClasses, TildaDesignUtils,
-	FormTildaDesignNewApp, FormTildaDesignScreen, FormTildaDesignAbout;
+	DOM, XMLWrite, XMLRead, TildaDesignPersist, TildaDesignDoc,
+	TildaDesignClasses, TildaDesignUtils, FormTildaDesignNewApp,
+	FormTildaDesignScreen, FormTildaDesignAbout;
 
 type
 	PCustNode = ^TCustNode;
@@ -162,6 +169,38 @@ procedure TTildaDesignMainForm.actFileNewAppExecute(Sender: TObject);
 		end;
 //		VirtualStringTree1.RootNodeCount:=  abstracts.Count;
 //		DoBuildTree;
+	end;
+
+procedure TTildaDesignMainForm.actFileOpenExecute(Sender: TObject);
+	var
+	d: TXMLDocument;
+
+	begin
+	if  OpenDialog1.Execute then
+		begin
+		ReadXMLFile(d, OpenDialog1.FileName);
+
+		FBaseName:= InputXML(d);
+		end;
+	end;
+
+procedure TTildaDesignMainForm.actFileSaveExecute(Sender: TObject);
+	var
+	d: TXMLDocument;
+
+	begin
+	SaveDialog1.FileName:= FBaseName + '.tilda';
+
+	if  SaveDialog1.Execute then
+		begin
+		d:= OutputXML(FBaseName);
+		try
+			WriteXMLFile(d, SaveDialog1.FileName);
+
+			finally
+			d.Free;
+			end;
+		end;
 	end;
 
 procedure TTildaDesignMainForm.actHelpAboutExecute(Sender: TObject);
@@ -398,7 +437,7 @@ procedure TTildaDesignMainForm.actObjNewTextExecute(Sender: TObject);
 
 	if  IsValidIdent(id) then
 		begin
-		t:= TTildaText.Create(id);
+		t:= TTildaText.Create(id, nil);
 		abstracts.Add(t);
 
 //		VirtualStringTree1.RootNodeCount:= abstracts.Count;

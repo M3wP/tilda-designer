@@ -19,7 +19,7 @@ FormTildaDesignScreen, FormTildaDesignEventRef, FormTildaDesignSelState,
 FormTildaDesignSelOptions, FrameTildaDesignElem, FormTildaDesignSelClr, 
 FrameTildaDesignPage, FrameTildaDesignPanel, TildaDesignPersist, 
 FrameTildaDesignText, FrameTildaDesignEvent, FrameTildaDesignCtrl, 
-FormTildaDesignAbout
+FormTildaDesignAbout, FrameTildaDesignLayer
   { you can add units after this };
 
 {$R *.res}

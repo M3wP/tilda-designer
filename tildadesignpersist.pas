@@ -23,14 +23,16 @@ type
 	TTildaPersistent = class;
 	TTildaPersistClass = class of TTildaPersistent;
 
-	TTildaReference = class(TObject)
-		node: string;
-		persistClass: TTildaPersistClass;
-		ident: string;
-	end;
+	{ TTildaReference }
 
-	TTildaReferences = TObjectList<TTildaReference>;
-	TTildaAbstractRefs = TDictionary<TTildaPersistent, TTildaReferences>;
+	TTildaReference = class(TObject)
+		prop: string;
+		childClass: TTildaPersistClass;
+		ident: string;
+
+		constructor Create(const AProp: string;
+				const AChild: TTildaPersistClass; const AIdent: string);
+	end;
 
 	{ TTildaPersistent }
 
@@ -42,11 +44,11 @@ type
 
 		class function node: string; virtual; abstract;
 
-		procedure ReadFromNode(const ANode: TDomNode); virtual; abstract;
+		procedure ReadFromNode(const ANode: TDomNode); virtual;
 		function  WriteToNode(const ADoc: TDomDocument): TDomElement; virtual;
 		procedure WriteToRefNode(const ADoc: TDomDocument;
 				const AParent: TDomElement); virtual;
-		procedure ApplyReference(const ARef: TTildaReference); virtual; abstract;
+		procedure ApplyReference(const ARef: TTildaReference); virtual;
 
 		constructor Create(const AIdent: string; const AMode: TTildaPersistMode);
 	end;
@@ -78,6 +80,15 @@ var
 
 implementation
 
+{ TTildaReference }
+
+constructor TTildaReference.Create(const AProp: string;
+		const AChild: TTildaPersistClass; const AIdent: string);
+	begin
+	prop:= AProp;
+	childClass:= AChild;
+	ident:= AIdent;
+	end;
 
 { TTildaPersistent }
 
@@ -90,6 +101,11 @@ procedure TTildaPersistent.PersistState;
 
 	o:= TTildaPersistDataList.Create(True);
 	persistData.Add(Self, o);
+	end;
+
+procedure TTildaPersistent.ReadFromNode(const ANode: TDomNode);
+	begin
+	ident:= ANode.Attributes.GetNamedItem('ident').TextContent;
 	end;
 
 function TTildaPersistent.WriteToNode(const ADoc: TDomDocument): TDomElement;
@@ -111,6 +127,11 @@ procedure TTildaPersistent.WriteToRefNode(const ADoc: TDomDocument;
 	n.SetAttribute('ident', ident);
 
 	AParent.AppendChild(n);
+	end;
+
+procedure TTildaPersistent.ApplyReference(const ARef: TTildaReference);
+	begin
+
 	end;
 
 constructor TTildaPersistent.Create(const AIdent: string;

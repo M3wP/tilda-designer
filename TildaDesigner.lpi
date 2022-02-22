@@ -220,6 +220,14 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="FormTildaDesignAbout"/>
       </Unit>
+      <Unit>
+        <Filename Value="frametildadesignlayer.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="TildaDesignLayerFrame"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="FrameTildaDesignLayer"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

@@ -90,14 +90,12 @@ object TildaDesignMainForm: TTildaDesignMainForm
       object ToolButton13: TToolButton
         Left = 38
         Top = 0
-        Caption = 'ToolButton13'
-        ImageIndex = 9
+        Action = actFileOpen
       end
       object ToolButton14: TToolButton
         Left = 75
         Top = 0
-        Caption = 'ToolButton14'
-        ImageIndex = 10
+        Action = actFileSave
       end
       object ToolButton15: TToolButton
         Left = 120
@@ -221,6 +219,18 @@ object TildaDesignMainForm: TTildaDesignMainForm
     object actHelpAbout: TAction
       Caption = 'About...'
       OnExecute = actHelpAboutExecute
+    end
+    object actFileSave: TAction
+      Category = 'File'
+      Caption = 'Save...'
+      ImageIndex = 10
+      OnExecute = actFileSaveExecute
+    end
+    object actFileOpen: TAction
+      Category = 'File'
+      Caption = 'Open...'
+      ImageIndex = 9
+      OnExecute = actFileOpenExecute
     end
   end
   object MainMenu1: TMainMenu
@@ -866,5 +876,20 @@ object TildaDesignMainForm: TTildaDesignMainForm
   object ImageList3: TImageList
     Left = 344
     Top = 334
+  end
+  object SaveDialog1: TSaveDialog
+    Title = 'Save As...'
+    DefaultExt = '.tilda'
+    Filter = 'Tilda Designer Files (*.tilda)|*.tilda|XML Files (*.xml)|*.xml|All Files (*.*)|*.*'
+    Options = [ofPathMustExist, ofEnableSizing, ofViewDetail]
+    Left = 344
+    Top = 232
+  end
+  object OpenDialog1: TOpenDialog
+    DefaultExt = '.tilda'
+    Filter = 'Tilda Designer Files (*.tilda)|*.tilda|XML Files (*.xml)|*.xml|All Files (*.*)|*.*'
+    Options = [ofReadOnly, ofExtensionDifferent, ofPathMustExist, ofFileMustExist, ofEnableSizing, ofViewDetail]
+    Left = 424
+    Top = 232
   end
 end

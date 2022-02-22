@@ -9,6 +9,7 @@ uses
 	Classes, SysUtils, ValEdit, TildaDesignTypes;
 
 
+function  HexToWord(const AHex: string): Word;
 function  HexToDWord(const AHex: string): Cardinal;
 function  FirstByClass(const AClass: TTildaAbstractClass): TTildaAbstract;
 function  FindByIdent(const AIdent: string): TTildaAbstract;
@@ -26,6 +27,26 @@ implementation
 uses
 	Controls, FormTildaDesignEventRef;
 
+
+function  HexToWord(const AHex: string): Word;
+	var
+	buf: array[0..3] of AnsiChar;
+	val: array[0..3] of AnsiChar;
+
+	begin
+	val:= Copy(AnsiString(AHex), 2, 4);
+	if  HexToBin(val, buf, 4) = 2 then
+		begin
+//!!!FIXME This is little endian only
+		Result:= (Byte(buf[0]) shl 8) or Byte(buf[1]);
+
+//		if  IntToHex(Result, 8) <> val then
+//			raise Exception.Create('blah');
+
+		end
+	else
+		Result:= $FFFF;
+	end;
 
 function  HexToDWord(const AHex: string): Cardinal;
 	var

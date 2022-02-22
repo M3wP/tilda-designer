@@ -24,7 +24,7 @@ type
 
 	{ TTildaDesignClass }
 
- TTildaDesignClass = class(TObject)
+	TTildaDesignClass = class(TObject)
 		itemClass: TTildaAbstractClass;
 		editor:  TTildaDesignEditFrameClass;
 
@@ -39,17 +39,24 @@ var
 	classEditors: TTildaDesignClasses;
 
 
+function  IdentOrEmpty(const AObj: TTildaAbstract): string;
 function  EditorForClass(const AClass: TTildaAbstractClass): TTildaDesignEditFrameClass;
 function  StateToHex(const AState: TTildaState): string;
+function  HexToState(const AHex: string): TTildaState;
 function  OptionsToHex(const AOptions: TTildaOptions): string;
+function  HexToOptions(const AHex: string): TTildaOptions;
 function  ColourToString(const AColour: TTildaColour): string;
+function  StringToColour(const AString: string): TTildaColour;
 function  ThemeColour(const AKind: TTildaColourKind): TTildaColour;
+function  ClassByNode(const ANode: string): TTildaAbstractClass;
+
 
 implementation
 
 uses
-	FrameTildaDesignModule, FrameTildaDesignUIntrf, FrameTildaDesignView,
-	FrameTildaDesignPage, FrameTildaDesignPanel;
+	TildaDesignUtils, FrameTildaDesignModule, FrameTildaDesignUIntrf,
+	FrameTildaDesignLayer, FrameTildaDesignView, FrameTildaDesignPage,
+	FrameTildaDesignPanel;
 
 
 const
@@ -64,6 +71,31 @@ const
 			'CLR_FOCUS', 'CLR_INSET', 'CLR_FACE', 'CLR_SHADOW' ,
 			'CLR_PAPER', 'CLR_MONEY' ,'CLR_ITEM' ,'CLR_INFORM' ,
 			'CLR_ACCEPT', 'CLR_APPLY', 'CLR_ABORT');
+
+
+function  ClassByNode(const ANode: string): TTildaAbstractClass;
+	var
+	i: Integer;
+
+	begin
+	Result:= nil;
+
+	for i:= 0 to classEditors.Count - 1 do
+		if  CompareText(classEditors[i].itemClass.node, ANode) = 0 then
+			begin
+			Result:= classEditors[i].itemClass;
+			Break;
+			end;
+	end;
+
+
+function IdentOrEmpty(const AObj: TTildaAbstract): string;
+	begin
+	if  Assigned(AObj) then
+		Result:= AObj.ident
+	else
+		Result:= '';
+	end;
 
 
 function  ThemeColour(const AKind: TTildaColourKind): TTildaColour;
@@ -86,6 +118,30 @@ function  ColourToString(const AColour: TTildaColour): string;
 		Result:= '$' + IntToHex(Word(AColour), 4);
 	end;
 
+function  StringToColour(const AString: string): TTildaColour;
+	var
+	v: Word;
+	i: TTildaColourKind;
+
+	begin
+	if  AString[Low(string)] = '$' then
+		begin
+		v:= HexToWord(AString);
+		Result:= TTildaColour(v);
+		end
+	else
+		begin
+		Result:= TTildaColour(tckAbort);
+
+		for i in TTildaColourKind do
+			if  CompareText(ARR_LIT_CLR_KINDS[i], AString) = 0 then
+				begin
+				Result:= TTildaColour(i);
+				Break;
+				end;
+		end;
+	end;
+
 function  StateToHex(const AState: TTildaState): string;
 	var
 	v: Word;
@@ -101,6 +157,21 @@ function  StateToHex(const AState: TTildaState): string;
 	end;
 
 
+function  HexToState(const AHex: string): TTildaState;
+	var
+	v: Word;
+	k: TTildaStateKind;
+
+	begin
+	v:= HexToWord(AHex);
+
+	Result:= [];
+
+	for k in TTildaStateKind do
+		if  (v and ARR_VAL_STATE_FLGS[k]) <> 0 then
+			Include(Result, k);
+	end;
+
 function  OptionsToHex(const AOptions: TTildaOptions): string;
 	var
 	v: Word;
@@ -113,6 +184,21 @@ function  OptionsToHex(const AOptions: TTildaOptions): string;
 			v:= v or ARR_VAL_OPTS_FLGS[k];
 
 	Result:= '$' + IntToHex(v, 4);
+	end;
+
+function  HexToOptions(const AHex: string): TTildaOptions;
+	var
+	v: Word;
+	k: TTildaOptionKind;
+
+	begin
+	v:= HexToWord(AHex);
+
+	Result:= [];
+
+	for k in TTildaOptionKind do
+		if  (v and ARR_VAL_OPTS_FLGS[k]) <> 0 then
+			Include(Result, k);
 	end;
 
 function  EditorForClass(const AClass: TTildaAbstractClass): TTildaDesignEditFrameClass;

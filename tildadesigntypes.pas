@@ -39,24 +39,17 @@ type
 
 	TTildaColour = Word;
 
-	//TTildaColour = class(TObject)
-	//	domain: TTildaColourDomain;
-	//	kind: TTildaColourKind;
-	//	system: Byte;
-	//end;
- //
-	//TTildaColours = TList<TTildaColour>;
-
-
  	TTildaAbstract = class;
 	TTildaAbstractClass = class of TTildaAbstract;
+
+	TTildaObject = class;
 
 	{ TTildaAbstract }
 
  	TTildaAbstract = class(TTildaPersistent)
 		refCount: Integer;
 
-		constructor Create(const AIdent: string);
+		constructor Create(const AIdent: string; const AParent: TTildaObject); virtual;
 	end;
 
 	TTildaAbstracts = TList<TTildaAbstract>;
@@ -74,7 +67,7 @@ type
 		function  WriteToNode(const ADoc: TDomDocument): TDomElement; override;
 		procedure ApplyReference(const ARef: TTildaReference); override;
 
-		constructor Create(const AIdent: string);
+		constructor Create(const AIdent: string; const AParent: TTildaObject); override;
 	end;
 
 	{ TTildaEvent }
@@ -91,7 +84,7 @@ type
 		function  WriteToNode(const ADoc: TDomDocument): TDomElement; override;
 		procedure ApplyReference(const ARef: TTildaReference); override;
 
-		constructor Create(const AIdent: string);
+		constructor Create(const AIdent: string; const AParent: TTildaObject); override;
 	end;
 
 	TTildaEvents = TList<TTildaEvent>;
@@ -115,15 +108,21 @@ type
 
 		class function size: Byte; virtual; abstract;
 
+		procedure ReadFromNode(const ANode: TDomNode); override;
 		function  WriteToNode(const ADoc: TDomDocument): TDomElement; override;
+		procedure ApplyReference(const ARef: TTildaReference); override;
 
-		constructor Create(const AIdent: string; const AParent: TTildaObject); virtual; 
+		constructor Create(const AIdent: string; const AParent: TTildaObject); override;
 	end;
 
 	{ TTildaNamedObject }
 
 	TTildaNamedObject = class(TTildaObject)
 		name:	TTildaNameStr;
+
+		function  WriteToNode(const ADoc: TDomDocument): TDomElement; override;
+		procedure ReadFromNode(const ANode: TDomNode); override;
+		procedure ApplyReference(const ARef: TTildaReference); override;
 
 		procedure PersistState; override;
 	end;
@@ -257,6 +256,10 @@ type
 
 		class function size: Byte; override;
 
+		procedure ReadFromNode(const ANode: TDomNode); override;
+		function  WriteToNode(const ADoc: TDomDocument): TDomElement; override;
+		procedure ApplyReference(const ARef: TTildaReference); override;
+
 		constructor Create(const AIdent: string; const AParent: TTildaObject); override; 
 		destructor  Destroy; override;
 	end;
@@ -356,13 +359,13 @@ var
 //	events: TTildaEvents;
 
 	abstracts: TTildaAbstracts;
-	abstractRefs: TTildaAbstractRefs;
+//	abstractRefs: TTildaAbstractRefs;
 
 
 implementation
 
 uses
-	TildaDesignClasses, TildaDesignUtils;
+	TildaDesignClasses, TildaDesignUtils, TildaDesignDoc;
 
 //procedure PopulateSystemColours;
 //	var
@@ -439,7 +442,7 @@ procedure PopulateSystemEvents;
 	begin
 	for i:= Low(ARR_REC_TILDA_SYSEVTS) to High(ARR_REC_TILDA_SYSEVTS) do
 		begin
-		evt:= TTildaEvent.Create(ARR_REC_TILDA_SYSEVTS[i].i);
+		evt:= TTildaEvent.Create(ARR_REC_TILDA_SYSEVTS[i].i, nil);
 		evt.kind:= ARR_REC_TILDA_SYSEVTS[i].k;
 		evt.system:= True;
 
@@ -454,6 +457,25 @@ function SystemEventByRecIndex(const AIndex: Integer): TTildaEvent;
 	end;
 
 { TTildaNamedObject }
+
+function TTildaNamedObject.WriteToNode(const ADoc: TDomDocument): TDomElement;
+	begin
+	Result:= inherited WriteToNode(ADoc);
+
+	Result.SetAttribute('name', name);
+	end;
+
+procedure TTildaNamedObject.ReadFromNode(const ANode: TDomNode);
+	begin
+	inherited ReadFromNode(ANode);
+
+	name:= ANode.Attributes.GetNamedItem('name').TextContent;
+	end;
+
+procedure TTildaNamedObject.ApplyReference(const ARef: TTildaReference);
+	begin
+	inherited ApplyReference(ARef);
+	end;
 
 procedure TTildaNamedObject.PersistState;
 	var
@@ -479,8 +501,15 @@ class function TTildaEvent.node: string;
 	end;
 
 procedure TTildaEvent.ReadFromNode(const ANode: TDomNode);
-	begin
+	var
+	s: string;
 
+	begin
+	inherited ReadFromNode(ANode);
+
+	s:= ANode.Attributes.GetNamedItem('kind').TextContent;
+
+	kind:= TTildaEventKind(StrToInt(s));
 	end;
 
 function TTildaEvent.WriteToNode(const ADoc: TDomDocument): TDomElement;
@@ -495,10 +524,12 @@ procedure TTildaEvent.ApplyReference(const ARef: TTildaReference);
 
 	end;
 
-constructor TTildaEvent.Create(const AIdent: string);
+constructor TTildaEvent.Create(const AIdent: string;
+		const AParent: TTildaObject);
 	begin
-	inherited Create(AIdent);
+	inherited Create(AIdent, nil);
 
+	mode:= tpmEvent;
 	end;
 
 { TTildaText }
@@ -521,7 +552,9 @@ class function TTildaText.node: string;
 
 procedure TTildaText.ReadFromNode(const ANode: TDomNode);
 	begin
+	inherited ReadFromNode(ANode);
 
+	text:= ANode.TextContent;
 	end;
 
 function TTildaText.WriteToNode(const ADoc: TDomDocument): TDomElement;
@@ -540,9 +573,10 @@ procedure TTildaText.ApplyReference(const ARef: TTildaReference);
 
 	end;
 
-constructor TTildaText.Create(const AIdent: string);
+constructor TTildaText.Create(const AIdent: string;
+		const AParent: TTildaObject);
 	begin
-	inherited Create(AIdent);
+	inherited Create(AIdent, nil);
 
 	mode:= tpmArray;
 	end;
@@ -588,8 +622,22 @@ class function TTildaControl.node: string;
 	end;
 
 procedure TTildaControl.ReadFromNode(const ANode: TDomNode);
-	begin
+	var
+	s: string;
 
+	begin
+	inherited;
+
+	AddAbstactRefFromNode(Self, 'text', ANode, TTildaText);
+
+	s:= ANode.Attributes.GetNamedItem('textoffx').TextContent;
+	textoffx:= StrToInt(s);
+
+	s:= ANode.Attributes.GetNamedItem('textaccel').TextContent;
+	textaccel:= StrToInt(s);
+
+	s:= ANode.Attributes.GetNamedItem('accelchar').TextContent;
+	accelchar:= StrToInt(s);
 	end;
 
 function TTildaControl.WriteToNode(const ADoc: TDomDocument): TDomElement;
@@ -603,10 +651,7 @@ function TTildaControl.WriteToNode(const ADoc: TDomDocument): TDomElement;
 	Result.SetAttribute('textaccel', IntToStr(textaccel));
 	Result.SetAttribute('accelchar', IntToStr(accelchar));
 
-	if  Assigned(text) then
-		Result.SetAttribute('text', text.ident)
-	else
-		Result.SetAttribute('text', '');
+	Result.SetAttribute('text', IdentOrEmpty(text));
 	end;
 
 procedure TTildaControl.ApplyReference(const ARef: TTildaReference);
@@ -698,8 +743,20 @@ class function TTildaPage.node: string;
 	end;
 
 procedure TTildaPage.ReadFromNode(const ANode: TDomNode);
-	begin
+	var
+	s: string;
 
+	begin
+	inherited;
+
+	AddAbstactRefFromNode(Self, 'pagenxt', ANode, TTildaPage);
+	AddAbstactRefFromNode(Self, 'pagebak', ANode, TTildaPage);
+	AddAbstactRefFromNode(Self, 'text', ANode, TTildaText);
+
+	AddAbstactRefsFromRefNode(Self, 'Panels', ANode, TTildaPanel);
+
+	s:= ANode.Attributes.GetNamedItem('textoffx').TextContent;
+	textoffx:= StrToInt(s);
 	end;
 
 function TTildaPage.WriteToNode(const ADoc: TDomDocument): TDomElement;
@@ -710,15 +767,8 @@ function TTildaPage.WriteToNode(const ADoc: TDomDocument): TDomElement;
 	begin
 	Result:= inherited WriteToNode(ADoc);
 
-	if  Assigned(pagenxt) then
-		Result.SetAttribute('pagenxt', pagenxt.ident)
-	else
-		Result.SetAttribute('pagenxt', '');
-
-	if  Assigned(pagebak) then
-		Result.SetAttribute('pagebak', pagebak.ident)
-	else
-		Result.SetAttribute('pagebak', '');
+	Result.SetAttribute('pagenxt', IdentOrEmpty(pagenxt));
+	Result.SetAttribute('pagebak', IdentOrEmpty(pagebak));
 
 	Result.SetAttribute('textoffx', IntToStr(textoffx));
 
@@ -737,7 +787,14 @@ function TTildaPage.WriteToNode(const ADoc: TDomDocument): TDomElement;
 
 procedure TTildaPage.ApplyReference(const ARef: TTildaReference);
 	begin
-
+	if  CompareText('pagenxt', ARef.prop) = 0 then
+		pagenxt:= FindByIdent(ARef.ident) as TTildaPage
+	else if  CompareText('pagebak', ARef.prop) = 0 then
+		pagebak:= FindByIdent(ARef.ident) as TTildaPage
+	else if  CompareText('text', ARef.prop) = 0 then
+		text:= FindByIdent(ARef.ident) as TTildaText
+	else
+		inherited;
 	end;
 
 constructor TTildaPage.Create(const AIdent: string; const AParent: TTildaObject);
@@ -786,9 +843,14 @@ class function TTildaBar.node: string;
 	end;
 
 procedure TTildaBar.ReadFromNode(const ANode: TDomNode);
+	var
+	s: string;
+
 	begin
 	inherited ReadFromNode(ANode);
 
+	s:= ANode.Attributes.GetNamedItem('position').TextContent;
+	position:= StrToInt(s);
 	end;
 
 function TTildaBar.WriteToNode(const ADoc: TDomDocument): TDomElement;
@@ -801,7 +863,6 @@ function TTildaBar.WriteToNode(const ADoc: TDomDocument): TDomElement;
 procedure TTildaBar.ApplyReference(const ARef: TTildaReference);
 	begin
 	inherited ApplyReference(ARef);
-
 	end;
 
 constructor TTildaBar.Create(const AIdent: string; const AParent: TTildaObject);
@@ -864,7 +925,11 @@ class function TTildaPanel.node: string;
 
 procedure TTildaPanel.ReadFromNode(const ANode: TDomNode);
 	begin
+	inherited ReadFromNode(ANode);
 
+	AddAbstactRefFromNode(Self, 'layer', ANode, TTildaPage);
+
+	AddAbstactRefsFromRefNode(Self, 'Controls', ANode, TTildaLayer);
 	end;
 
 function TTildaPanel.WriteToNode(const ADoc: TDomDocument): TDomElement;
@@ -875,10 +940,7 @@ function TTildaPanel.WriteToNode(const ADoc: TDomDocument): TDomElement;
 	begin
 	Result:= inherited WriteToNode(ADoc);
 
-	if  Assigned(layer) then
-		Result.SetAttribute('layer', layer.ident)
-	else
-		Result.SetAttribute('layer', '');
+	Result.SetAttribute('layer', IdentOrEmpty(layer));
 
 	elem:= ADoc.CreateElement('Controls');
 	Result.AppendChild(elem);
@@ -889,7 +951,12 @@ function TTildaPanel.WriteToNode(const ADoc: TDomDocument): TDomElement;
 
 procedure TTildaPanel.ApplyReference(const ARef: TTildaReference);
 	begin
-
+	if  CompareText('layer', ARef.prop) = 0 then
+		layer:= FindByIdent(ARef.ident) as TTildaLayer
+	else if  CompareText('Controls', ARef.prop) = 0 then
+		controls.Add(FindByIdent(ARef.ident) as TTildaControl)
+	else
+		inherited;
 	end;
 
 constructor TTildaPanel.Create(const AIdent: string; const AParent: TTildaObject);
@@ -966,6 +1033,62 @@ class function TTildaElement.size: Byte;
 	Result:= VAL_SIZ_TILDA_ELEM;
 	end;
 
+procedure TTildaElement.ReadFromNode(const ANode: TDomNode);
+	var
+	s: string;
+
+	begin
+	inherited ReadFromNode(ANode);
+
+	AddAbstactRefFromNode(Self, 'present', ANode, TTildaEvent);
+	AddAbstactRefFromNode(Self, 'keypress', ANode, TTildaEvent);
+	AddAbstactRefFromNode(Self, 'owner', ANode, TTildaElement);
+
+	s:= ANode.Attributes.GetNamedItem('colour').TextContent;
+	colour:= StringToColour(s);
+
+	s:= ANode.Attributes.GetNamedItem('posx').TextContent;
+	posx:= StrToInt(s);
+
+	s:= ANode.Attributes.GetNamedItem('posy').TextContent;
+	posy:= StrToInt(s);
+
+	s:= ANode.Attributes.GetNamedItem('width').TextContent;
+	width:= StrToInt(s);
+
+	s:= ANode.Attributes.GetNamedItem('height').TextContent;
+	height:= StrToInt(s);
+	end;
+
+function TTildaElement.WriteToNode(const ADoc: TDomDocument): TDomElement;
+	begin
+	Result:= inherited WriteToNode(ADoc);
+
+	Result.SetAttribute('present', IdentOrEmpty(present));
+	Result.SetAttribute('keypress', IdentOrEmpty(keypress));
+
+	Result.SetAttribute('owner', IdentOrEmpty(owner));
+
+	Result.SetAttribute('colour', ColourToString(colour));
+
+	Result.SetAttribute('posx', IntToStr(posx));
+	Result.SetAttribute('posy', IntToStr(posy));
+	Result.SetAttribute('width', IntToStr(width));
+	Result.SetAttribute('height', IntToStr(height));
+	end;
+
+procedure TTildaElement.ApplyReference(const ARef: TTildaReference);
+	begin
+	if  CompareText(ARef.prop, 'present') = 0 then
+		present:= FindByIdent(ARef.ident) as TTildaEvent
+	else if  CompareText(ARef.prop, 'keypress') = 0 then
+		keypress:= FindByIdent(ARef.ident) as TTildaEvent
+	else if  CompareText(ARef.prop, 'owner') = 0 then
+		owner:= FindByIdent(ARef.ident) as TTildaElement
+	else
+		inherited ApplyReference(ARef);
+	end;
+
 constructor TTildaElement.Create(const AIdent: string;
 		const AParent: TTildaObject);
 	begin
@@ -1011,8 +1134,23 @@ class function TTildaLayer.node: string;
 	end;
 
 procedure TTildaLayer.ReadFromNode(const ANode: TDomNode);
-	begin
+	var
+	s: string;
 
+	begin
+	inherited;
+
+	s:= ANode.Attributes.GetNamedItem('width').TextContent;
+	width:= StrToInt(s);
+
+	s:= ANode.Attributes.GetNamedItem('offset').TextContent;
+	offset:= StrToInt(s);
+
+	s:= ANode.Attributes.GetNamedItem('transparent').TextContent;
+	transparent:= StrToInt(s);
+
+	s:= ANode.Attributes.GetNamedItem('background').TextContent;
+	background:= StrToInt(s);
 	end;
 
 function TTildaLayer.WriteToNode(const ADoc: TDomDocument): TDomElement;
@@ -1027,7 +1165,7 @@ function TTildaLayer.WriteToNode(const ADoc: TDomDocument): TDomElement;
 
 procedure TTildaLayer.ApplyReference(const ARef: TTildaReference);
 	begin
-
+	inherited ApplyReference(ARef);
 	end;
 
 constructor TTildaLayer.Create(const AIdent: string; const AParent: TTildaObject);
@@ -1140,8 +1278,32 @@ class function TTildaView.node: string;
 	end;
 
 procedure TTildaView.ReadFromNode(const ANode: TDomNode);
-	begin
+	var
+	s: string;
 
+	begin
+	inherited;
+
+	s:= ANode.Attributes.GetNamedItem('width').TextContent;
+	width:= StrToInt(s);
+
+	s:= ANode.Attributes.GetNamedItem('height').TextContent;
+	height:= StrToInt(s);
+
+	s:= ANode.Attributes.GetNamedItem('location').TextContent;
+	location:= StrToInt(s);
+
+	s:= ANode.Attributes.GetNamedItem('cellsize').TextContent;
+	cellsize:= StrToInt(s);
+
+	s:= ANode.Attributes.GetNamedItem('linelen').TextContent;
+	linelen:= StrToInt(s);
+
+	AddAbstactRefFromNode(Self, 'actvpage', ANode, TTildaPage);
+
+	AddAbstactRefsFromRefNode(Self, 'Layers', ANode, TTildaLayer);
+	AddAbstactRefsFromRefNode(Self, 'Bars', ANode, TTildaBar);
+	AddAbstactRefsFromRefNode(Self, 'Pages', ANode, TTildaPage);
 	end;
 
 function TTildaView.WriteToNode(const ADoc: TDomDocument): TDomElement;
@@ -1184,9 +1346,16 @@ function TTildaView.WriteToNode(const ADoc: TDomDocument): TDomElement;
 	end;
 
 procedure TTildaView.ApplyReference(const ARef: TTildaReference);
-begin
-
-end;
+	begin
+	if  CompareText(ARef.prop, 'Layers') = 0 then
+		layers.Add(FindByIdent(ARef.ident) as TTildaLayer)
+	else if CompareText(ARef.prop, 'Bars') = 0 then
+		bars.Add(FindByIdent(ARef.ident) as TTildaBar)
+	else if CompareText(ARef.prop, 'Pages') = 0 then
+		pages.Add(FindByIdent(ARef.ident) as TTildaPage)
+	else
+		inherited ApplyReference(ARef);
+	end;
 
 constructor TTildaView.Create(const AIdent: string; const AParent: TTildaObject);
 	begin
@@ -1256,8 +1425,22 @@ class function TTildaUInterface.node: string;
 	end;
 
 procedure TTildaUInterface.ReadFromNode(const ANode: TDomNode);
-	begin
+	var
+	s: string;
 
+	begin
+	inherited;
+
+	s:= ANode.Attributes.GetNamedItem('mouseloc').TextContent;
+	mouseloc:= StrToInt(s);
+
+	s:= ANode.Attributes.GetNamedItem('mptrloc').TextContent;
+	mptrloc:= StrToInt(s);
+
+	s:= ANode.Attributes.GetNamedItem('mousepal').TextContent;
+	mousepal:= StrToInt(s);
+
+	AddAbstactRefsFromRefNode(Self, 'Views', ANode, TTildaView);
 	end;
 
 function TTildaUInterface.WriteToNode(const ADoc: TDomDocument): TDomElement;
@@ -1282,7 +1465,10 @@ function TTildaUInterface.WriteToNode(const ADoc: TDomDocument): TDomElement;
 
 procedure TTildaUInterface.ApplyReference(const ARef: TTildaReference);
 	begin
-
+	if  CompareText(ARef.prop, 'Views') = 0 then
+		views.Add(FindByIdent(ARef.ident) as TTildaView)
+	else
+		inherited ApplyReference(ARef);
 	end;
 
 constructor TTildaUInterface.Create(const AIdent: string; 
@@ -1345,7 +1531,9 @@ class function TTildaModule.node: string;
 
 procedure TTildaModule.ReadFromNode(const ANode: TDomNode);
 	begin
+	inherited;
 
+	AddAbstactRefsFromRefNode(Self, 'Units', ANode, TTildaUInterface);
 	end;
 
 function TTildaModule.WriteToNode(const ADoc: TDomDocument): TDomElement;
@@ -1365,7 +1553,10 @@ function TTildaModule.WriteToNode(const ADoc: TDomDocument): TDomElement;
 
 procedure TTildaModule.ApplyReference(const ARef: TTildaReference);
 	begin
-
+	if  CompareText(ARef.prop, 'Units') = 0 then
+		units.Add(FindByIdent(ARef.ident) as TTildaUInterface)
+	else
+		inherited ApplyReference(ARef);
 	end;
 
 constructor TTildaModule.Create(const AIdent: string;
@@ -1449,17 +1640,74 @@ procedure TTildaObject.PersistState;
 	persistData.Items[Self].Add(d);
 	end;
 
+procedure TTildaObject.ReadFromNode(const ANode: TDomNode);
+	var
+	s: string;
+
+	begin
+	inherited ReadFromNode(ANode);
+
+	AddAbstactRefFromNode(Self, 'parent', ANode, TTildaObject);
+
+	AddAbstactRefFromNode(Self, 'prepare', ANode, TTildaEvent);
+	AddAbstactRefFromNode(Self, 'initialise', ANode, TTildaEvent);
+	AddAbstactRefFromNode(Self, 'change', ANode, TTildaEvent);
+	AddAbstactRefFromNode(Self, 'release', ANode, TTildaEvent);
+
+	s:= ANode.Attributes.GetNamedItem('state').TextContent;
+	state:= HexToState(s);
+
+	s:= ANode.Attributes.GetNamedItem('oldstate').TextContent;
+	oldstate:= HexToState(s);
+
+	s:= ANode.Attributes.GetNamedItem('options').TextContent;
+	options:= HexToOptions(s);
+
+	s:= ANode.Attributes.GetNamedItem('tag').TextContent;
+	tag:= StrToInt(s);
+	end;
+
 function TTildaObject.WriteToNode(const ADoc: TDomDocument): TDomElement;
 	begin
 	Result:= inherited WriteToNode(ADoc);
 
 	Result.SetAttribute('size', IntToStr(size));
+
+	Result.SetAttribute('parent', IdentOrEmpty(parent));
+
+	Result.SetAttribute('prepare', IdentOrEmpty(prepare));
+	Result.SetAttribute('initialise', IdentOrEmpty(initialise));
+	Result.SetAttribute('change', IdentOrEmpty(change));
+	Result.SetAttribute('release', IdentOrEmpty(release));
+
+	Result.SetAttribute('state', StateToHex(state));
+	Result.SetAttribute('oldstate', StateToHex(oldstate));
+
+	Result.SetAttribute('options', OptionsToHex(options));
+
+	Result.SetAttribute('tag', IntToStr(tag));
+	end;
+
+procedure TTildaObject.ApplyReference(const ARef: TTildaReference);
+	begin
+	if  CompareText(ARef.prop, 'parent') = 0  then
+		parent:= FindByIdent(ARef.ident) as TTildaObject
+	else if CompareText(ARef.prop, 'prepare') = 0  then
+		prepare:= FindByIdent(ARef.ident) as TTildaEvent
+	else if CompareText(ARef.prop, 'initialise') = 0  then
+		initialise:= FindByIdent(ARef.ident) as TTildaEvent
+	else if CompareText(ARef.prop, 'change') = 0  then
+		change:= FindByIdent(ARef.ident) as TTildaEvent
+	else if CompareText(ARef.prop, 'release') = 0  then
+		release:= FindByIdent(ARef.ident) as TTildaEvent
+	else
+		inherited ApplyReference(ARef);
 	end;
 
 constructor TTildaObject.Create(const AIdent: string;
 		const AParent: TTildaObject);
 	begin
-	inherited Create(AIdent);
+	inherited Create(AIdent, nil);
 
 	parent:= AParent;
 
@@ -1470,7 +1718,8 @@ constructor TTildaObject.Create(const AIdent: string;
 
 { TTildaAbstract }
 
-constructor TTildaAbstract.Create(const AIdent: string);
+constructor TTildaAbstract.Create(const AIdent: string;
+		const AParent: TTildaObject);
 	begin
 	ident:= AIdent;
 	end;
@@ -1481,7 +1730,7 @@ initialization
 //	events:= TTildaEvents.Create;
 
 	abstracts:= TTildaAbstracts.Create;
-	abstractRefs:= TTildaAbstractRefs.Create;
+//	abstractRefs:= TTildaAbstractRefs.Create;
 
 //	PopulateSystemColours;
 	PopulateSystemEvents;
