@@ -1,10 +1,2 @@
 inherited TildaDesignCtrlFrame: TTildaDesignCtrlFrame
-  inherited ScrollBox1: TScrollBox
-    inherited ValueListEditor1: TValueListEditor
-      ColWidths = (
-        128
-        195
-      )
-    end
-  end
 end

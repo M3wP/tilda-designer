@@ -67,11 +67,7 @@ procedure TTildaDesignEditFrame.ValueListEditor1ValidateEntry(sender: TObject;
 	DoValidateProp(ValueListEditor1.Keys[ARow], OldValue, NewValue);
 
 	if  CompareStr(NewValue, OldValue) <> 0 then
-		begin
 		FValidated:= True;
-		if  Assigned(FOnChange) then
-			FOnChange(Self);
-		end;
 	end;
 
 procedure TTildaDesignEditFrame.ValueListEditor1EditingDone(Sender: TObject);
@@ -88,6 +84,9 @@ procedure TTildaDesignEditFrame.ValueListEditor1EditingDone(Sender: TObject);
 		v:= ValueListEditor1.Values[p];
 
 		DoEditProp(p, v);
+
+		if  Assigned(FOnChange) then
+			FOnChange(Self);
 		end;
 	end;
 

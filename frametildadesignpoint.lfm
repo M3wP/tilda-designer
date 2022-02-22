@@ -1,0 +1,4 @@
+inherited TildaDesignPointFrame: TTildaDesignPointFrame
+  DesignLeft = 848
+  DesignTop = 230
+end

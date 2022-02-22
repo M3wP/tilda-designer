@@ -54,6 +54,24 @@ type
 
 	TTildaAbstracts = TList<TTildaAbstract>;
 
+	{ TTildaPoint }
+
+ 	TTildaPoint = class(TTildaAbstract)
+	public
+		x,
+		y: Byte;
+
+		procedure PersistState; override;
+
+		class function node: string; override;
+
+		procedure ReadFromNode(const ANode: TDomNode); override;
+		function  WriteToNode(const ADoc: TDomDocument): TDomElement; override;
+		procedure ApplyReference(const ARef: TTildaReference); override;
+
+		constructor Create(const AIdent: string; const AParent: TTildaObject); override;
+	end;
+
 	{ TTildaText }
 
 	TTildaText = class(TTildaAbstract)
@@ -246,6 +264,8 @@ type
 		owner: TTildaObject;
 
 		colour: TTildaColour;
+
+		ptoffs: TTildaPoint;
 
 		posx,
 		posy,
@@ -454,6 +474,45 @@ procedure PopulateSystemEvents;
 function SystemEventByRecIndex(const AIndex: Integer): TTildaEvent;
 	begin
 	Result:= FindByIdent(ARR_REC_TILDA_SYSEVTS[AIndex].i) as TTildaEvent;
+	end;
+
+{ TTildaPoint }
+
+procedure TTildaPoint.PersistState;
+	begin
+//	inherited PersistState;
+	end;
+
+class function TTildaPoint.node: string;
+	begin
+	Result:= 'Point';
+	end;
+
+procedure TTildaPoint.ReadFromNode(const ANode: TDomNode);
+	begin
+	inherited ReadFromNode(ANode);
+
+	x:= StrToInt(ANode.Attributes.GetNamedItem('x').TextContent);
+	y:= StrToInt(ANode.Attributes.GetNamedItem('y').TextContent);
+	end;
+
+function TTildaPoint.WriteToNode(const ADoc: TDomDocument): TDomElement;
+	begin
+	Result:= inherited WriteToNode(ADoc);
+
+	Result.SetAttribute('x', IntToStr(x));
+	Result.SetAttribute('y', IntToStr(y));
+	end;
+
+procedure TTildaPoint.ApplyReference(const ARef: TTildaReference);
+	begin
+	inherited ApplyReference(ARef);
+	end;
+
+constructor TTildaPoint.Create(const AIdent: string;
+		const AParent: TTildaObject);
+	begin
+	inherited Create(AIdent, AParent);
 	end;
 
 { TTildaNamedObject }
@@ -986,6 +1045,7 @@ procedure TTildaElement.PersistState;
 	var
 	d: TTildaDataItem;
 	id: string;
+	pt: TPoint;
 
 	begin
 	inherited PersistState;
@@ -1017,9 +1077,20 @@ procedure TTildaElement.PersistState;
 		d:= TTildaDataItem.Create('colour', tdtValue, ColourToString(colour));
 	persistData.Items[Self].Add(d);
 
-	d:= TTildaDataItem.Create('posx', tdtValue, IntToStr(posx));
+	if  Assigned(ptoffs) then
+		begin
+		pt.x:= ptoffs.x;
+		pt.y:= ptoffs.y;
+		end
+	else
+		begin
+		pt.x:= 0;
+		pt.y:= 0;
+		end;
+
+	d:= TTildaDataItem.Create('posx', tdtValue, IntToStr(posx + pt.x));
 	persistData.Items[Self].Add(d);
-	d:= TTildaDataItem.Create('posy', tdtValue, IntToStr(posy));
+	d:= TTildaDataItem.Create('posy', tdtValue, IntToStr(posy + pt.y));
 	persistData.Items[Self].Add(d);
 	d:= TTildaDataItem.Create('width', tdtValue, IntToStr(width));
 	persistData.Items[Self].Add(d);
@@ -1047,6 +1118,8 @@ procedure TTildaElement.ReadFromNode(const ANode: TDomNode);
 	s:= ANode.Attributes.GetNamedItem('colour').TextContent;
 	colour:= StringToColour(s);
 
+	AddAbstactRefFromNode(Self, 'ptoffs', ANode, TTildaPoint);
+
 	s:= ANode.Attributes.GetNamedItem('posx').TextContent;
 	posx:= StrToInt(s);
 
@@ -1071,6 +1144,8 @@ function TTildaElement.WriteToNode(const ADoc: TDomDocument): TDomElement;
 
 	Result.SetAttribute('colour', ColourToString(colour));
 
+	Result.SetAttribute('ptoffs', IdentOrEmpty(ptoffs));
+
 	Result.SetAttribute('posx', IntToStr(posx));
 	Result.SetAttribute('posy', IntToStr(posy));
 	Result.SetAttribute('width', IntToStr(width));
@@ -1085,6 +1160,8 @@ procedure TTildaElement.ApplyReference(const ARef: TTildaReference);
 		keypress:= FindByIdent(ARef.ident) as TTildaEvent
 	else if  CompareText(ARef.prop, 'owner') = 0 then
 		owner:= FindByIdent(ARef.ident) as TTildaElement
+	else if  CompareText(ARef.prop, 'ptoffs') = 0 then
+		ptoffs:= FindByIdent(ARef.ident) as TTildaPoint
 	else
 		inherited ApplyReference(ARef);
 	end;

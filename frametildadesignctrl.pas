@@ -53,10 +53,9 @@ procedure TTildaDesignCtrlFrame.DoSetItem;
 	begin
 	inherited DoSetItem;
 
-	if  Assigned(c.text) then
-		ValueListEditor1.Strings.Add('text=' + c.text.ident)
-	else
-		ValueListEditor1.Strings.Add('text=');
+	c:= TTildaControl(FItem);
+
+	ValueListEditor1.Strings.Add('text=' + IdentOrEmpty(c.text));
 
 	ValueListEditor1.ItemProps['text'].EditStyle:= esEllipsis;
 	ValueListEditor1.ItemProps['text'].ReadOnly:= True;
@@ -71,8 +70,12 @@ procedure TTildaDesignCtrlFrame.DoSetItem;
 
 class procedure TTildaDesignCtrlFrame.RegisterEditor;
 	begin
-
+	TTildaDesignClass.Create(TTildaControl, Self);
 	end;
+
+
+initialization
+	TTildaDesignCtrlFrame.RegisterEditor;
 
 end.
 

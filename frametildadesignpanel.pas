@@ -105,10 +105,7 @@ procedure TTildaDesignPanelFrame.DoSetItem;
 
 	p:= TTildaPanel(FItem);
 
-	if  Assigned(p.layer) then
-		ValueListEditor1.Strings.Add('layer=' + p.layer.ident)
-	else
-		ValueListEditor1.Strings.Add('layer=');
+	ValueListEditor1.Strings.Add('layer=' + IdentOrEmpty(p.layer));
 
 	ValueListEditor1.ItemProps['layer'].EditStyle:= esEllipsis;
 	ValueListEditor1.ItemProps['layer'].ReadOnly:= True;
@@ -124,6 +121,11 @@ class procedure TTildaDesignPanelFrame.RegisterEditor;
 constructor TTildaDesignPanelFrame.Create(AOwner: TComponent);
 	begin
 	inherited Create(AOwner);
+
+	subItemsControls.ItemClass:= TTildaControl;
+	subItemsControls.OnAddItem:= ControlsAddItem;
+	subItemsControls.OnGetText:= ControlsGetItemText;
+	subItemsControls.OnRemoveItem:= ControlsRemoveItem;
 	end;
 
 

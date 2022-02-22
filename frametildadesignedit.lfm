@@ -5,7 +5,6 @@ object TildaDesignEditFrame: TTildaDesignEditFrame
   Width = 335
   ClientHeight = 328
   ClientWidth = 335
-  LCLVersion = '2.2.0.4'
   TabOrder = 0
   DesignLeft = 665
   DesignTop = 324
@@ -46,7 +45,7 @@ object TildaDesignEditFrame: TTildaDesignEditFrame
       OnStringsChange = ValueListEditor1StringsChange
       ColWidths = (
         128
-        197
+        195
       )
     end
   end

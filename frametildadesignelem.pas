@@ -69,7 +69,25 @@ procedure TTildaDesignElemFrame.DoLookupProp(const AProp: string;
 		begin
 		if  TildaDesignAddSubItemForm.ShowAddSubItem(TTildaElement, True) = mrOk then
 			if  Assigned(TildaDesignAddSubItemForm.Selected) then
-				ANewValue:= TildaDesignAddSubItemForm.Selected.ident
+				begin
+				ANewValue:= TildaDesignAddSubItemForm.Selected.ident;
+				TTildaElement(FItem).owner:= TildaDesignAddSubItemForm.Selected
+						as TTildaElement;
+				end
+			else
+				ANewValue:= ''
+		else
+			ANewValue:= AOldValue;
+		end
+	else if  CompareText('ptoffs', AProp) = 0 then
+		begin
+		if  TildaDesignAddSubItemForm.ShowAddSubItem(TTildaPoint, True) = mrOk then
+			if  Assigned(TildaDesignAddSubItemForm.Selected) then
+				begin
+				ANewValue:= TildaDesignAddSubItemForm.Selected.ident;
+				TTildaElement(FItem).ptoffs:= TildaDesignAddSubItemForm.Selected
+						as TTildaPoint;
+				end
 			else
 				ANewValue:= ''
 		else
@@ -116,10 +134,7 @@ procedure TTildaDesignElemFrame.DoSetItem;
 	EditorAddItemEvent(ValueListEditor1, 'present', e.present);
 	EditorAddItemEvent(ValueListEditor1, 'keypress', e.keypress);
 
-	if  Assigned(e.owner) then
-		ValueListEditor1.Strings.Add('owner=' + e.owner.ident)
-	else
-		ValueListEditor1.Strings.Add('owner=');
+	ValueListEditor1.Strings.Add('owner=' + IdentOrEmpty(e.owner));
 
 	ValueListEditor1.ItemProps['owner'].EditStyle:= esEllipsis;
 	ValueListEditor1.ItemProps['owner'].ReadOnly:= True;
@@ -127,6 +142,11 @@ procedure TTildaDesignElemFrame.DoSetItem;
 	ValueListEditor1.Strings.Add('colour=' + ColourToString(e.colour));
 	ValueListEditor1.ItemProps['colour'].EditStyle:= esEllipsis;
 	ValueListEditor1.ItemProps['colour'].ReadOnly:= True;
+
+	ValueListEditor1.Strings.Add('ptoffs=' + IdentOrEmpty(e.ptoffs));
+
+	ValueListEditor1.ItemProps['ptoffs'].EditStyle:= esEllipsis;
+	ValueListEditor1.ItemProps['ptoffs'].ReadOnly:= True;
 
 	ValueListEditor1.Strings.Add('posx=' + IntToStr(e.posx));
 	ValueListEditor1.Strings.Add('posy=' + IntToStr(e.posy));

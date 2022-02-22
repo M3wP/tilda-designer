@@ -217,6 +217,7 @@
         <Filename Value="formtildadesignabout.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="TildaDesignAboutForm"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="FormTildaDesignAbout"/>
       </Unit>
@@ -227,6 +228,14 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
         <UnitName Value="FrameTildaDesignLayer"/>
+      </Unit>
+      <Unit>
+        <Filename Value="frametildadesignpoint.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="TildaDesignPointFrame"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="FrameTildaDesignPoint"/>
       </Unit>
     </Units>
   </ProjectOptions>

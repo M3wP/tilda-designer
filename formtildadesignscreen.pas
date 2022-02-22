@@ -6,7 +6,8 @@ unit FormTildaDesignScreen;
 interface
 
 uses
-	Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls;
+	Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls,
+	TildaDesignTypes;
 
 type
 
@@ -17,7 +18,7 @@ type
 	private
 		procedure FillRegion(const ARect: TRect; const AColour: Integer);
 	public
-		procedure PaintInterface;
+		procedure PaintInterface(const ASelected: TTildaAbstract);
 	end;
 
 var
@@ -28,7 +29,7 @@ implementation
 {$R *.lfm}
 
 uses
-	TildaDesignTypes ,TildaDesignUtils;
+	TildaDesignUtils;
 
 type
 	TC64RGB = packed record
@@ -140,13 +141,66 @@ function PalFromCtrlColour(const AColour: TTildaColour;
 			Result:= ATheme^.data[val];
 	end;
 
-procedure TTildaDesignScreenForm.PaintInterface;
+procedure TTildaDesignScreenForm.PaintInterface(
+			const ASelected: TTildaAbstract);
 	var
 	cellsz: TPoint;
 	theme: PJudeTheme;
 	ui: TTildaUInterface;
 	vw: TTildaView;
-	i: Integer;
+	i,
+	j: Integer;
+	pt: TPoint;
+
+	procedure DrawFocusRect;
+		var
+		r: TRect;
+		pt: TPoint;
+
+		begin
+		if  Assigned(ASelected) then
+			begin
+			if  ASelected is TTildaPoint then
+				begin
+				PaintBox1.Canvas.Pen.Color:= clLime;
+
+				r:= CellRectToRect(cellsz, ControlToRect(
+						TTildaPoint(ASelected).x,
+						TTildaPoint(ASelected).y, 1, 1));
+				end
+			else if  ASelected is TTildaElement then
+				begin
+				PaintBox1.Canvas.Pen.Color:= clRed;
+
+				if  Assigned(TTildaElement(ASelected).ptoffs) then
+					begin
+					pt.x:= TTildaElement(ASelected).ptoffs.x;
+					pt.y:= TTildaElement(ASelected).ptoffs.y
+					end
+				else
+					begin
+					pt.x:= 0;
+					pt.y:= 0;
+					end;
+
+				r:= CellRectToRect(cellsz, ControlToRect(
+						TTildaElement(ASelected).posx + pt.x,
+						TTildaElement(ASelected).posy + pt.y,
+						TTildaElement(ASelected).width,
+						TTildaElement(ASelected).height));
+				end
+			else
+				Exit;
+
+			r.Inflate(-2, -2, 2, 2);
+
+			PaintBox1.Canvas.Brush.Style:= bsClear;
+			PaintBox1.Canvas.Pen.Style:= psSolid;
+			PaintBox1.Canvas.Pen.Width:= 2;
+
+			PaintBox1.Canvas.Rectangle(r);
+			end;
+		end;
 
 	begin
 	theme:= @ARR_REC_JUDE_THEME[0];
@@ -178,13 +232,50 @@ procedure TTildaDesignScreenForm.PaintInterface;
 				PalFromCtrlColour(vw.actvpage.colour, theme));
 
 		for i:= 0 to vw.actvpage.panels.Count - 1 do
+			begin
+			if  Assigned(vw.actvpage.panels[i].ptoffs) then
+				begin
+				pt.x:= vw.actvpage.panels[i].ptoffs.x;
+				pt.y:= vw.actvpage.panels[i].ptoffs.y
+				end
+			else
+				begin
+				pt.x:= 0;
+				pt.y:= 0;
+				end;
+
 			FillRegion(CellRectToRect(cellsz, ControlToRect(
-				vw.actvpage.panels[i].posx,
-				vw.actvpage.panels[i].posy,
+				vw.actvpage.panels[i].posx + pt.x,
+				vw.actvpage.panels[i].posy + pt.y,
 				vw.actvpage.panels[i].width,
 				vw.actvpage.panels[i].height)),
 				PalFromCtrlColour(vw.actvpage.panels[i].colour, theme));
+
+			for j:= 0 to vw.actvpage.panels[i].controls.Count - 1 do
+				begin
+				if  Assigned(vw.actvpage.panels[i].controls[j].ptoffs) then
+					begin
+					pt.x:= vw.actvpage.panels[i].controls[j].ptoffs.x;
+					pt.y:= vw.actvpage.panels[i].controls[j].ptoffs.y
+					end
+				else
+					begin
+					pt.x:= 0;
+					pt.y:= 0;
+					end;
+
+				FillRegion(CellRectToRect(cellsz, ControlToRect(
+					vw.actvpage.panels[i].controls[j].posx + pt.x,
+					vw.actvpage.panels[i].controls[j].posy + pt.y,
+					vw.actvpage.panels[i].controls[j].width,
+					vw.actvpage.panels[i].controls[j].height)),
+					PalFromCtrlColour(vw.actvpage.panels[i].controls[j].colour,
+					theme));
+				end;
+			end;
 		end;
+
+	DrawFocusRect;
 	end;
 
 end.

@@ -19,6 +19,8 @@ type
 		actHelpAbout: TAction;
 		actFileSave: TAction;
 		actFileOpen: TAction;
+		actObjNewCtrl: TAction;
+		actObjNewPoint: TAction;
 		actObjNewText: TAction;
 		actObjNewPanel: TAction;
 		actObjNewPage: TAction;
@@ -62,14 +64,19 @@ type
 		ToolButton27: TToolButton;
 		ToolButton28: TToolButton;
 		ToolButton29: TToolButton;
+		ToolButton3: TToolButton;
+		ToolButton4: TToolButton;
+		ToolButton5: TToolButton;
 		VirtualStringTree1: TVirtualStringTree;
 		procedure actFileGenCExecute(Sender: TObject);
 		procedure actFileNewAppExecute(Sender: TObject);
 		procedure actFileOpenExecute(Sender: TObject);
 		procedure actFileSaveExecute(Sender: TObject);
 		procedure actHelpAboutExecute(Sender: TObject);
+		procedure actObjNewCtrlExecute(Sender: TObject);
 		procedure actObjNewPageExecute(Sender: TObject);
 		procedure actObjNewPanelExecute(Sender: TObject);
+		procedure actObjNewPointExecute(Sender: TObject);
 		procedure actObjNewTextExecute(Sender: TObject);
 		procedure ControlBar1BandDrag(Sender: TObject; Control: TControl;
 			var Drag: Boolean);
@@ -94,11 +101,16 @@ type
 	private
 		FFrame: TTildaDesignEditFrame;
 		FNodeEvt,
+		FNodePts,
 		FNodeTex,
 		FNodeObj,
-		FNodeElm: PVirtualNode;
+		FNodeElm,
+		FNodePge,
+		FNodePnl,
+		FNodeCtl: PVirtualNode;
 
 		FBaseName: string;
+		FSelected: TTildaAbstract;
 
 		procedure DoBuildTree;
 		procedure DoScreenChange(ASender: TObject);
@@ -206,6 +218,24 @@ procedure TTildaDesignMainForm.actFileSaveExecute(Sender: TObject);
 procedure TTildaDesignMainForm.actHelpAboutExecute(Sender: TObject);
 	begin
 	TildaDesignAboutForm.ShowModal;
+	end;
+
+procedure TTildaDesignMainForm.actObjNewCtrlExecute(Sender: TObject);
+	var
+	s,
+	id: string;
+	c: TTildaControl;
+
+	begin
+	s:= 'ctl_'+FBaseName+'_';
+	id:= InputBox('New Control...', 'ident:', s);
+
+	if  (s <> id)
+	and IsValidIdent(id) then
+		begin
+		c:= TTildaControl.Create(id, nil);
+		abstracts.Add(c);
+		end;
 	end;
 
 procedure TTildaDesignMainForm.actFileGenCExecute(Sender: TObject);
@@ -384,14 +414,17 @@ procedure TTildaDesignMainForm.actFileGenCExecute(Sender: TObject);
 
 procedure TTildaDesignMainForm.actObjNewPageExecute(Sender: TObject);
 	var
+	s,
 	id: string;
 	p: TTildaPage;
 	u: TTildaUInterface;
 
 	begin
-	id:= InputBox('New Page...', 'ident:', 'pge_' + FBaseName + '_');
+	s:= 'pge_' + FBaseName + '_';
+	id:= InputBox('New Page...', 'ident:', s);
 
-	if  IsValidIdent(id) then
+	if  (s <> id)
+	and IsValidIdent(id) then
 		begin
 		u:= FirstByClass(TTildaUInterface) as TTildaUInterface;
 
@@ -405,15 +438,18 @@ procedure TTildaDesignMainForm.actObjNewPageExecute(Sender: TObject);
 
 procedure TTildaDesignMainForm.actObjNewPanelExecute(Sender: TObject);
 	var
+	s,
 	id: string;
 	p: TTildaPanel;
 	u: TTildaUInterface;
 	l: TTildaLayer;
 
 	begin
-	id:= InputBox('New Panel...', 'ident:', 'pnl_' + FBaseName + '_');
+	s:= 'pnl_' + FBaseName + '_';
+	id:= InputBox('New Panel...', 'ident:', s);
 
-	if  IsValidIdent(id) then
+	if  (s <> id)
+	and IsValidIdent(id) then
 		begin
 		u:= FirstByClass(TTildaUInterface) as TTildaUInterface;
 		l:= FirstByClass(TTildaLayer) as TTildaLayer;
@@ -421,27 +457,42 @@ procedure TTildaDesignMainForm.actObjNewPanelExecute(Sender: TObject);
 		p:= TTildaPanel.Create(id, u);
 		p.layer:= l;
 		abstracts.Add(p);
+		end;
+	end;
 
-//		VirtualStringTree1.RootNodeCount:= abstracts.Count;
-//		DoBuildTree;
+procedure TTildaDesignMainForm.actObjNewPointExecute(Sender: TObject);
+	var
+	s,
+	id: string;
+	p: TTildaPoint;
+
+	begin
+	s:= 'pnt_'+FBaseName+'_';
+	id:= InputBox('New Point...', 'ident:', s);
+
+	if  (id <> s)
+	and IsValidIdent(id) then
+		begin
+		p:= TTildaPoint.Create(id, nil);
+		abstracts.Add(p);
 		end;
 	end;
 
 procedure TTildaDesignMainForm.actObjNewTextExecute(Sender: TObject);
 	var
+	s,
 	id: string;
 	t: TTildaText;
 
 	begin
-	id:= InputBox('New Text...', 'ident:', '');
+	s:= 'str_'+FBaseName+'_';
+	id:= InputBox('New Text...', 'ident:', s);
 
-	if  IsValidIdent(id) then
+	if  (id <> s)
+	and IsValidIdent(id) then
 		begin
 		t:= TTildaText.Create(id, nil);
 		abstracts.Add(t);
-
-//		VirtualStringTree1.RootNodeCount:= abstracts.Count;
-//		DoBuildTree;
 		end;
 	end;
 
@@ -487,6 +538,8 @@ procedure TTildaDesignMainForm.VirtualStringTree1Change(Sender: TBaseVirtualTree
 		FFrame:= nil;
 		end;
 
+	FSelected:= nil;
+
 	if  Assigned(Node) then
 		begin
 		d:= VirtualStringTree1.GetNodeData(Node);
@@ -505,9 +558,12 @@ procedure TTildaDesignMainForm.VirtualStringTree1Change(Sender: TBaseVirtualTree
 			FFrame.Align:= alClient;
 			FFrame.SetItem(a);
 
+			FSelected:= a;
+
 			ActiveControl:= FFrame.ValueListEditor1;
 
 			FFrame.OnChange:= DoScreenChange;
+			DoScreenChange(Self);
 			end;
 		end;
 	end;
@@ -578,6 +634,11 @@ procedure TTildaDesignMainForm.DoBuildTree;
 	data^.internal:= 'Events';
 	data^.icon:= 2;
 
+	FNodePts:= VirtualStringTree1.AddChild(nil);
+	data:= VirtualStringTree1.GetNodeData(FNodePts);
+	data^.internal:= 'Points';
+	data^.icon:= 4;
+
 	FNodeTex:= VirtualStringTree1.AddChild(nil);
 	data:= VirtualStringTree1.GetNodeData(FNodeTex);
 	data^.internal:= 'Texts';
@@ -593,12 +654,38 @@ procedure TTildaDesignMainForm.DoBuildTree;
 	data^.internal:= 'Elements';
 	data^.icon:= 1;
 
+
+	FNodePge:= VirtualStringTree1.AddChild(FNodeElm);
+	data:= VirtualStringTree1.GetNodeData(FNodePge);
+	data^.internal:= 'Pages';
+	data^.icon:= 5;
+
+	FNodePnl:= VirtualStringTree1.AddChild(FNodeElm);
+	data:= VirtualStringTree1.GetNodeData(FNodePnl);
+	data^.internal:= 'Panels';
+	data^.icon:= 6;
+
+	FNodeCtl:= VirtualStringTree1.AddChild(FNodeElm);
+	data:= VirtualStringTree1.GetNodeData(FNodeCtl);
+	data^.internal:= 'Controls';
+	data^.icon:= 7;
+
+	VirtualStringTree1.FullExpand(FNodeElm);
+
 	for i:= 0 to abstracts.Count - 1 do
 		begin
 		if  abstracts[i] is TTildaEvent then
 			node:= VirtualStringTree1.AddChild(FNodeEvt)
+		else if abstracts[i] is TTildaPoint then
+			node:= VirtualStringTree1.AddChild(FNodePts)
 		else if abstracts[i] is TTildaText then
 			node:= VirtualStringTree1.AddChild(FNodeTex)
+		else if abstracts[i] is TTildaPage then
+			node:= VirtualStringTree1.AddChild(FNodePge)
+		else if abstracts[i] is TTildaPanel then
+			node:= VirtualStringTree1.AddChild(FNodePnl)
+		else if abstracts[i] is TTildaControl then
+			node:= VirtualStringTree1.AddChild(FNodeCtl)
 		else if abstracts[i] is TTildaElement then
 			node:= VirtualStringTree1.AddChild(FNodeElm)
 		else
@@ -611,12 +698,13 @@ procedure TTildaDesignMainForm.DoBuildTree;
 
 procedure TTildaDesignMainForm.DoScreenChange(ASender: TObject);
 	begin
-	TildaDesignScreenForm.PaintInterface;
+	TildaDesignScreenForm.PaintInterface(FSelected);
 	end;
 
 procedure TTildaDesignMainForm.DoAbstractsNotify(ASender: TObject; constref
 		AItem: TTildaAbstract; AAction: TCollectionNotification);
 	var
+	pnode,
 	node: PVirtualNode;
 	data: PCustNode;
 
@@ -624,16 +712,28 @@ procedure TTildaDesignMainForm.DoAbstractsNotify(ASender: TObject; constref
 	if  AAction = cnAdded then
 		begin
 		if  AItem is TTildaEvent then
-			node:= VirtualStringTree1.AddChild(FNodeEvt)
+			pnode:= FNodeEvt
+		else if AItem is TTildaPoint then
+			pnode:= FNodePts
 		else if AItem is TTildaText then
-			node:= VirtualStringTree1.AddChild(FNodeTex)
+			pnode:= FNodeTex
+		else if AItem is TTildaPage then
+			pnode:= FNodePge
+		else if AItem is TTildaPanel then
+			pnode:= FNodePnl
+		else if AItem is TTildaControl then
+			pnode:= FNodeCtl
 		else if AItem is TTildaElement then
-			node:= VirtualStringTree1.AddChild(FNodeElm)
+			pnode:= FNodeElm
 		else
-			node:= VirtualStringTree1.AddChild(FNodeObj);
+			pnode:= FNodeObj;
+
+		node:= VirtualStringTree1.AddChild(pnode);
 
 		data:= VirtualStringTree1.GetNodeData(node);
 		data^.abstract:= AItem;
+
+		VirtualStringTree1.FullExpand(pnode);
 		end;
 	end;
 
