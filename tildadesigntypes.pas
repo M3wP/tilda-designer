@@ -715,7 +715,10 @@ function TTildaControl.WriteToNode(const ADoc: TDomDocument): TDomElement;
 
 procedure TTildaControl.ApplyReference(const ARef: TTildaReference);
 	begin
-
+	if  CompareText('text', ARef.prop) = 0 then
+		text:= FindByIdent(ARef.ident) as TTildaText
+	else
+		inherited;
 	end;
 
 constructor TTildaControl.Create(const AIdent: string;
@@ -852,6 +855,8 @@ procedure TTildaPage.ApplyReference(const ARef: TTildaReference);
 		pagebak:= FindByIdent(ARef.ident) as TTildaPage
 	else if  CompareText('text', ARef.prop) = 0 then
 		text:= FindByIdent(ARef.ident) as TTildaText
+	else if  CompareText('Panels', ARef.prop) = 0 then
+		panels.Add(FindByIdent(ARef.ident) as TTildaPanel)
 	else
 		inherited;
 	end;
@@ -1430,6 +1435,8 @@ procedure TTildaView.ApplyReference(const ARef: TTildaReference);
 		bars.Add(FindByIdent(ARef.ident) as TTildaBar)
 	else if CompareText(ARef.prop, 'Pages') = 0 then
 		pages.Add(FindByIdent(ARef.ident) as TTildaPage)
+	else if CompareText(ARef.prop, 'actvpage') = 0 then
+		actvpage:=  FindByIdent(ARef.ident) as TTildaPage
 	else
 		inherited ApplyReference(ARef);
 	end;

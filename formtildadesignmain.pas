@@ -19,6 +19,12 @@ type
 		actHelpAbout: TAction;
 		actFileSave: TAction;
 		actFileOpen: TAction;
+		actViewTheme5: TAction;
+		actViewTheme4: TAction;
+		actViewTheme3: TAction;
+		actViewTheme2: TAction;
+		actViewTheme1: TAction;
+		actViewTheme0: TAction;
 		actObjNewCtrl: TAction;
 		actObjNewPoint: TAction;
 		actObjNewText: TAction;
@@ -32,6 +38,19 @@ type
 		ImageList3: TImageList;
 		MainMenu1: TMainMenu;
 		MenuItem1: TMenuItem;
+		MenuItem10: TMenuItem;
+		MenuItem11: TMenuItem;
+		MenuItem12: TMenuItem;
+		MenuItem13: TMenuItem;
+		MenuItem14: TMenuItem;
+		MenuItem15: TMenuItem;
+		MenuItem16: TMenuItem;
+		MenuItem17: TMenuItem;
+		MenuItem18: TMenuItem;
+		MenuItem19: TMenuItem;
+		MenuItem20: TMenuItem;
+		MenuItem21: TMenuItem;
+		Separator2: TMenuItem;
 		MenuItem2: TMenuItem;
 		MenuItem3: TMenuItem;
 		MenuItem4: TMenuItem;
@@ -78,6 +97,7 @@ type
 		procedure actObjNewPanelExecute(Sender: TObject);
 		procedure actObjNewPointExecute(Sender: TObject);
 		procedure actObjNewTextExecute(Sender: TObject);
+		procedure actViewTheme0Execute(Sender: TObject);
 		procedure ControlBar1BandDrag(Sender: TObject; Control: TControl;
 			var Drag: Boolean);
 		procedure ControlBar1EndDrag(Sender, Target: TObject; X, Y: Integer);
@@ -111,6 +131,7 @@ type
 
 		FBaseName: string;
 		FSelected: TTildaAbstract;
+		FTheme: Integer;
 
 		procedure DoBuildTree;
 		procedure DoScreenChange(ASender: TObject);
@@ -496,6 +517,12 @@ procedure TTildaDesignMainForm.actObjNewTextExecute(Sender: TObject);
 		end;
 	end;
 
+procedure TTildaDesignMainForm.actViewTheme0Execute(Sender: TObject);
+	begin
+	FTheme:= TAction(Sender).Tag;
+	DoScreenChange(Sender);
+	end;
+
 procedure TTildaDesignMainForm.ControlBar1BandDrag(Sender: TObject;
 		Control: TControl; var Drag: Boolean);
 	begin
@@ -511,6 +538,13 @@ procedure TTildaDesignMainForm.FormCreate(Sender: TObject);
 	begin
 //	VirtualStringTree1.NodeDataSize:= SizeOf(TCustNode);
 //	VirtualStringTree1.RootNodeCount:= 4;
+
+	actViewTheme0.Caption:= ARR_REC_JUDE_THEME[0].name;
+	actViewTheme1.Caption:= ARR_REC_JUDE_THEME[1].name;
+	actViewTheme2.Caption:= ARR_REC_JUDE_THEME[2].name;
+	actViewTheme3.Caption:= ARR_REC_JUDE_THEME[3].name;
+	actViewTheme4.Caption:= ARR_REC_JUDE_THEME[4].name;
+	actViewTheme5.Caption:= ARR_REC_JUDE_THEME[5].name;
 
 	abstracts.OnNotify:= DoAbstractsNotify;
 	DoBuildTree;
@@ -698,7 +732,7 @@ procedure TTildaDesignMainForm.DoBuildTree;
 
 procedure TTildaDesignMainForm.DoScreenChange(ASender: TObject);
 	begin
-	TildaDesignScreenForm.PaintInterface(FSelected);
+	TildaDesignScreenForm.PaintInterface(FSelected, FTheme);
 	end;
 
 procedure TTildaDesignMainForm.DoAbstractsNotify(ASender: TObject; constref

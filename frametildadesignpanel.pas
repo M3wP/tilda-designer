@@ -38,7 +38,7 @@ implementation
 {$R *.lfm}
 
 uses
-	FormTildaDesignAddSubItem, TildaDesignClasses;
+	FormTildaDesignAddSubItem, TildaDesignClasses, TildaDesignUtils;
 
 { TTildaDesignPanelFrame }
 
@@ -80,7 +80,11 @@ procedure TTildaDesignPanelFrame.DoLookupProp(const AProp: string;
 		begin
 		if  TildaDesignAddSubItemForm.ShowAddSubItem(TTildaLayer, True) = mrOk then
 			if  Assigned(TildaDesignAddSubItemForm.Selected) then
-				ANewValue:= TildaDesignAddSubItemForm.Selected.ident
+				begin
+				ANewValue:= TildaDesignAddSubItemForm.Selected.ident;
+				TTildaPanel(FItem).layer:= FindByIdent(
+						TildaDesignAddSubItemForm.Selected.ident) as TTildaLayer;
+				end
 			else
 				ANewValue:= ''
 		else

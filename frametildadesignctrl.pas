@@ -17,6 +17,8 @@ type
 	private
 		procedure DoValidateProp(const AProp: string; const AOldValue: string;
 				var ANewValue: string); override;
+		procedure DoLookupProp(const AProp: string; const AOldValue: string;
+			var ANewValue: string); override;
 		procedure DoEditProp(const AProp: string; const AValue: string); override;
 		procedure DoSetItem; override;
 
@@ -30,20 +32,54 @@ implementation
 {$R *.lfm}
 
 uses
-	TildaDesignTypes, TildaDesignClasses;
+	TildaDesignTypes, TildaDesignClasses, TildaDesignUtils,
+	FormTildaDesignAddSubItem;
 
 { TTildaDesignCtrlFrame }
 
 procedure TTildaDesignCtrlFrame.DoValidateProp(const AProp: string;
 		const AOldValue: string; var ANewValue: string);
+	var
+	v: Integer;
+
 	begin
-	inherited DoValidateProp(AProp, AOldValue, ANewValue);
+	if  CompareText(AProp, 'textoffx') = 0 then
+		begin
+		if  not TryStrToInt(ANewValue, v) then
+			ANewValue:= AOldValue
+		end
+	else
+		inherited DoValidateProp(AProp, AOldValue, ANewValue);
+	end;
+
+procedure TTildaDesignCtrlFrame.DoLookupProp(const AProp: string;
+		const AOldValue: string; var ANewValue: string);
+	begin
+	if  (CompareText(AProp, 'text') = 0) then
+		begin
+		if  TildaDesignAddSubItemForm.ShowAddSubItem(TTildaText, True) = mrOk then
+			if  Assigned(TildaDesignAddSubItemForm.Selected) then
+				begin
+				ANewValue:= TildaDesignAddSubItemForm.Selected.ident;
+				TTildaControl(FItem).text:= FindByIdent(
+						TildaDesignAddSubItemForm.Selected.ident) as TTildaText;
+				end
+			else
+				ANewValue:= ''
+		else
+			ANewValue:= AOldValue;
+		end
+	else
+		inherited DoLookupProp(AProp, AOldValue, ANewValue);
 	end;
 
 procedure TTildaDesignCtrlFrame.DoEditProp(const AProp: string;
 		const AValue: string);
 	begin
-	inherited DoEditProp(AProp, AValue);
+	if  CompareText(AProp, 'textoffx') = 0 then
+		TTildaControl(FItem).textoffx:= StrToInt(AValue)
+	else
+		inherited DoEditProp(AProp, AValue);
 	end;
 
 procedure TTildaDesignCtrlFrame.DoSetItem;
