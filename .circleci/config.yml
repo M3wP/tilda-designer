@@ -4,5 +4,10 @@ jobs:
     macos:
       xcode: 12.5.1
     steps:
+      - add_ssh_keys:
+        fingerprints:
+          - ""
       - checkout # check out the code in the project directory
-      - run: echo "hello world" # run the `echo` command
+      - run: |
+          echo "hello world"
+
