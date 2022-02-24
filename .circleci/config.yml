@@ -12,5 +12,5 @@ jobs:
           echo "hello world"
           touch dummy.txt
           git add dummy.txt
-          git commit
+          git commit -m "AUTODUMMY"
           git push
