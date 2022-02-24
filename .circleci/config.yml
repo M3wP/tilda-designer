@@ -5,8 +5,8 @@ jobs:
       xcode: 12.5.1
     steps:
       - add_ssh_keys:
-        fingerprints:
-          - "58:7e:ce:12:a6:aa:55:76:e2:2b:d0:97:c5:5b:02:f2"
+          fingerprints:
+            - "58:7e:ce:12:a6:aa:55:76:e2:2b:d0:97:c5:5b:02:f2"
       - checkout # check out the code in the project directory
       - run: |
           echo "hello world"
