@@ -20,7 +20,7 @@ jobs:
           ls -l /Volumes/fpc-3.2.2.intelarm64-macosx
           sudo installer -pkg /Volumes/fpc-3.2.2.intelarm64-macosx/fpc-3.2.2-intelarm64-macosx.mpkg -target /
           curl -L -o ~/Lazarus-2.2.0-0-x86_64-macosx.pkg 'https://sourceforge.net/projects/lazarus/files/Lazarus%20macOS%20x86-64/Lazarus%202.2.0/Lazarus-2.2.0-0-x86_64-macosx.pkg'
-          sudo installer -verbose -pkg ~/Lazarus-2.2.0-0-x86_64-macosx.pkg -target /
+          sudo installer -pkg ~/Lazarus-2.2.0-0-x86_64-macosx.pkg -target /
           echo "***INSTALL LIBS***"
           curl -L -o bgrabitmap.zip 'https://github.com/bgrabitmap/bgrabitmap/archive/refs/heads/master.zip'
           unzip -d ~/. bgrabitmap.zip 
@@ -34,8 +34,8 @@ jobs:
           echo "***BUILD APPLICATION***"
           lazbuild TildaDesigner.lpi
           echo "***BUILD PACKAGE***"
-          hdiutil create -srcfolder ./TildaDesigner.app TildaDesigner.dmg
+          zip -r TildaDesigner_macos.zip TildaDesigner ./TildaDesigner.app 
           echo "***UPDATE GIT***"
-          git add TildaDesigner.dmg
+          git add TildaDesigner_macos.zip
           git commit -m "AUTODUMMY"
           git push
