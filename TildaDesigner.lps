@@ -2,15 +2,20 @@
 <CONFIG>
   <ProjectSession>
     <Version Value="12"/>
-    <BuildModes Active="Default"/>
+    <BuildModes Active="Default">
+      <SessionMatrixOptions Count="1">
+        <Item1 ID="189959600723" Type="IDEMacro" MacroName="LCLWidgetType" Value="win32"/>
+      </SessionMatrixOptions>
+    </BuildModes>
     <Units>
       <Unit>
         <Filename Value="TildaDesigner.lpr"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="5"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="10"/>
         <CursorPos Y="43"/>
-        <UsageCount Value="196"/>
+        <UsageCount Value="211"/>
+        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
@@ -21,19 +26,20 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="FormTildaDesignMain"/>
         <TopLine Value="520"/>
-        <CursorPos X="51" Y="528"/>
-        <UsageCount Value="196"/>
+        <CursorPos X="74" Y="539"/>
+        <UsageCount Value="211"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="tildadesigntypes.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="TildaDesignTypes"/>
-        <EditorIndex Value="8"/>
+        <EditorIndex Value="13"/>
         <TopLine Value="697"/>
         <CursorPos X="26" Y="712"/>
-        <UsageCount Value="196"/>
+        <UsageCount Value="211"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
@@ -41,10 +47,10 @@
         <Filename Value="tildadesigndoc.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="TildaDesignDoc"/>
-        <EditorIndex Value="1"/>
+        <EditorIndex Value="6"/>
         <TopLine Value="144"/>
         <CursorPos X="22" Y="166"/>
-        <UsageCount Value="196"/>
+        <UsageCount Value="211"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
@@ -58,7 +64,8 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="184"/>
         <CursorPos X="22" Y="218"/>
-        <UsageCount Value="196"/>
+        <UsageCount Value="211"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="frametildadesignmodule.pas"/>
@@ -70,16 +77,17 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="39"/>
         <CursorPos Y="76"/>
-        <UsageCount Value="196"/>
+        <UsageCount Value="211"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="tildadesignclasses.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="TildaDesignClasses"/>
-        <EditorIndex Value="7"/>
+        <EditorIndex Value="12"/>
         <TopLine Value="55"/>
         <CursorPos Y="70"/>
-        <UsageCount Value="196"/>
+        <UsageCount Value="211"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
@@ -93,7 +101,8 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="71"/>
         <CursorPos Y="103"/>
-        <UsageCount Value="196"/>
+        <UsageCount Value="211"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="tildadesignutils.pas"/>
@@ -101,7 +110,8 @@
         <UnitName Value="TildaDesignUtils"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="11" Y="16"/>
-        <UsageCount Value="195"/>
+        <UsageCount Value="210"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="formtildadesignnewapp.pas"/>
@@ -113,7 +123,8 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="63"/>
         <CursorPos X="40" Y="137"/>
-        <UsageCount Value="189"/>
+        <UsageCount Value="204"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="frametildadesignsubitems.pas"/>
@@ -125,7 +136,8 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="44"/>
         <CursorPos Y="64"/>
-        <UsageCount Value="187"/>
+        <UsageCount Value="202"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="formtildadesignaddsubitem.pas"/>
@@ -136,7 +148,8 @@
         <UnitName Value="FormTildaDesignAddSubItem"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="9" Y="22"/>
-        <UsageCount Value="187"/>
+        <UsageCount Value="202"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="frametildadesignview.pas"/>
@@ -148,7 +161,8 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="5"/>
         <CursorPos X="28" Y="49"/>
-        <UsageCount Value="186"/>
+        <UsageCount Value="201"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="formtildadesignscreen.pas"/>
@@ -157,11 +171,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="FormTildaDesignScreen"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="7"/>
         <TopLine Value="15"/>
-        <CursorPos X="45" Y="27"/>
-        <UsageCount Value="182"/>
+        <CursorPos X="36" Y="37"/>
+        <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -176,7 +189,8 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="56"/>
         <CursorPos Y="80"/>
-        <UsageCount Value="178"/>
+        <UsageCount Value="196"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="formtildadesignselstate.pas"/>
@@ -188,7 +202,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="13"/>
         <CursorPos Y="24"/>
-        <UsageCount Value="177"/>
+        <UsageCount Value="195"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
@@ -201,7 +215,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="30"/>
         <CursorPos X="52" Y="51"/>
-        <UsageCount Value="177"/>
+        <UsageCount Value="195"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
@@ -214,7 +228,8 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="123"/>
         <CursorPos X="19" Y="147"/>
-        <UsageCount Value="172"/>
+        <UsageCount Value="190"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="formtildadesignselclr.pas"/>
@@ -225,7 +240,8 @@
         <UnitName Value="FormTildaDesignSelClr"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="12" Y="3"/>
-        <UsageCount Value="170"/>
+        <UsageCount Value="188"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="frametildadesignpage.pas"/>
@@ -237,7 +253,8 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="135"/>
         <CursorPos Y="158"/>
-        <UsageCount Value="168"/>
+        <UsageCount Value="186"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="frametildadesignpanel.pas"/>
@@ -246,11 +263,12 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
         <UnitName Value="FrameTildaDesignPanel"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="10"/>
         <TopLine Value="22"/>
         <CursorPos X="68" Y="41"/>
-        <UsageCount Value="163"/>
+        <UsageCount Value="181"/>
         <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="tildadesignpersist.pas"/>
@@ -259,7 +277,8 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="13"/>
         <CursorPos X="30" Y="20"/>
-        <UsageCount Value="155"/>
+        <UsageCount Value="173"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="frametildadesigntext.pas"/>
@@ -268,10 +287,11 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
         <UnitName Value="FrameTildaDesignText"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="9"/>
         <CursorPos X="14" Y="3"/>
-        <UsageCount Value="121"/>
+        <UsageCount Value="139"/>
         <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="frametildadesignevent.pas"/>
@@ -280,10 +300,11 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
         <UnitName Value="FrameTildaDesignEvent"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="8"/>
         <CursorPos X="39" Y="53"/>
-        <UsageCount Value="120"/>
+        <UsageCount Value="138"/>
         <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="frametildadesignctrl.pas"/>
@@ -292,11 +313,12 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
         <UnitName Value="FrameTildaDesignCtrl"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="11"/>
         <TopLine Value="41"/>
         <CursorPos X="35" Y="70"/>
-        <UsageCount Value="113"/>
+        <UsageCount Value="131"/>
         <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="formtildadesignabout.pas"/>
@@ -307,7 +329,8 @@
         <UnitName Value="FormTildaDesignAbout"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="96" Y="10"/>
-        <UsageCount Value="95"/>
+        <UsageCount Value="113"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="frametildadesignlayer.pas"/>
@@ -318,7 +341,8 @@
         <UnitName Value="FrameTildaDesignLayer"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="23" Y="26"/>
-        <UsageCount Value="69"/>
+        <UsageCount Value="87"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="frametildadesignpoint.pas"/>
@@ -330,7 +354,8 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="4"/>
         <CursorPos X="29" Y="68"/>
-        <UsageCount Value="55"/>
+        <UsageCount Value="73"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
         <Filename Value="/usr/share/fpcsrc/3.2.2/packages/rtl-generics/src/generics.collections.pas"/>
@@ -338,15 +363,15 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="69"/>
         <CursorPos X="25" Y="113"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="8"/>
       </Unit>
       <Unit>
         <Filename Value="/usr/share/fpcsrc/3.2.2/packages/fcl-xml/src/xmlwrite.pp"/>
         <UnitName Value="XMLWrite"/>
-        <EditorIndex Value="11"/>
+        <EditorIndex Value="16"/>
         <TopLine Value="94"/>
         <CursorPos X="11" Y="115"/>
-        <UsageCount Value="19"/>
+        <UsageCount Value="28"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -354,7 +379,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="2277"/>
         <CursorPos X="10" Y="2315"/>
-        <UsageCount Value="42"/>
+        <UsageCount Value="41"/>
       </Unit>
       <Unit>
         <Filename Value="/usr/share/lazarus/2.2.0/lcl/graphics.pp"/>
@@ -362,7 +387,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="705"/>
         <CursorPos X="9" Y="733"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit>
       <Unit>
         <Filename Value="/usr/share/lazarus/2.2.0/components/lazutils/graphtype.pp"/>
@@ -370,13 +395,13 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="53"/>
         <CursorPos X="63" Y="42"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit>
       <Unit>
         <Filename Value="/media/daniel/0204180B041803F7/Projects/D64Explorer/FrameD64ExplorerManage.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="121"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
@@ -384,14 +409,14 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="555"/>
         <CursorPos X="25" Y="564"/>
-        <UsageCount Value="13"/>
+        <UsageCount Value="12"/>
       </Unit>
       <Unit>
         <Filename Value="/usr/share/fpcsrc/3.2.2/rtl/objpas/classes/util.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="21"/>
         <CursorPos X="3" Y="38"/>
-        <UsageCount Value="33"/>
+        <UsageCount Value="32"/>
       </Unit>
       <Unit>
         <Filename Value="/usr/share/lazarus/2.2.0/lcl/dialogs.pp"/>
@@ -399,95 +424,88 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="713"/>
         <CursorPos X="10" Y="730"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="8"/>
       </Unit>
       <Unit>
         <Filename Value="/usr/share/fpcsrc/3.2.2/rtl/inc/typshrdh.inc"/>
-        <EditorIndex Value="9"/>
+        <EditorIndex Value="14"/>
         <TopLine Value="121"/>
         <CursorPos X="18" Y="140"/>
-        <UsageCount Value="18"/>
+        <UsageCount Value="27"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="/usr/share/fpcsrc/3.2.2/rtl/inc/typshrd.inc"/>
-        <EditorIndex Value="10"/>
+        <EditorIndex Value="15"/>
         <TopLine Value="323"/>
         <CursorPos X="3" Y="325"/>
-        <UsageCount Value="18"/>
+        <UsageCount Value="27"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="../../.lazarus/onlinepackagemanager/packages/bgrabitmap-master/bgrabitmap/bgrabitmap.pas"/>
         <UnitName Value="BGRABitmap"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="12"/>
+        <UsageCount Value="11"/>
       </Unit>
       <Unit>
         <Filename Value="/usr/share/lazarus/2.2.0/lcl/include/customimage.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="28"/>
         <CursorPos Y="46"/>
-        <UsageCount Value="12"/>
+        <UsageCount Value="10"/>
       </Unit>
       <Unit>
         <Filename Value="../../.lazarus/onlinepackagemanager/packages/bgrabitmap-master/bgrabitmap/unibitmap.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="2805"/>
         <CursorPos Y="2823"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit>
       <Unit>
         <Filename Value="../../.lazarus/onlinepackagemanager/packages/bgrabitmap-master/bgrabitmap/csscolorconst.inc"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="23" Y="10"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
+      </Unit>
+      <Unit>
+        <Filename Value="/usr/share/lazarus/2.2.0/lcl/interfaces/gtk3/gtk3widgets.pas"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="2545"/>
+        <CursorPos X="22" Y="2562"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../.lazarus/onlinepackagemanager/packages/VirtualTreeView V5/Source/VirtualTrees.pas"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="59"/>
+        <CursorPos X="3" Y="77"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="../../.lazarus/onlinepackagemanager/packages/lclextensions/delphicompat.pas"/>
+        <UnitName Value="DelphiCompat"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="120"/>
+        <CursorPos X="21" Y="143"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="/usr/share/lazarus/2.2.0/lcl/interfaces/fpgui/fpguicrosshelpers.pas"/>
+        <EditorIndex Value="5"/>
+        <CursorPos X="27" Y="15"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
       </Unit>
     </Units>
     <Debugger>
       <Backend Value="{9D4186E9-BFB0-4A8A-AA88-AA3F2C62F5BE}"/>
     </Debugger>
     <JumpHistory HistoryIndex="29">
-      <Position>
-        <Filename Value="formtildadesignscreen.pas"/>
-        <Caret Line="202" TopLine="174"/>
-      </Position>
-      <Position>
-        <Filename Value="formtildadesignscreen.pas"/>
-        <Caret Line="112" Column="24" TopLine="105"/>
-      </Position>
-      <Position>
-        <Filename Value="formtildadesignscreen.pas"/>
-        <Caret Line="206" Column="20" TopLine="178"/>
-      </Position>
-      <Position>
-        <Filename Value="formtildadesignscreen.pas"/>
-        <Caret Line="308" Column="44" TopLine="275"/>
-      </Position>
-      <Position>
-        <Filename Value="formtildadesignscreen.pas"/>
-        <Caret Line="385" Column="51" TopLine="173"/>
-      </Position>
-      <Position>
-        <Filename Value="formtildadesignscreen.pas"/>
-        <Caret Line="180" TopLine="174"/>
-      </Position>
-      <Position>
-        <Filename Value="formtildadesignscreen.pas"/>
-        <Caret Line="200" Column="17" TopLine="176"/>
-      </Position>
-      <Position>
-        <Filename Value="formtildadesignscreen.pas"/>
-        <Caret Line="202" Column="34" TopLine="176"/>
-      </Position>
-      <Position>
-        <Filename Value="formtildadesignscreen.pas"/>
-        <Caret Line="183" Column="50" TopLine="166"/>
-      </Position>
-      <Position>
-        <Filename Value="formtildadesignscreen.pas"/>
-        <Caret Line="176" TopLine="364"/>
-      </Position>
       <Position>
         <Filename Value="formtildadesignscreen.pas"/>
         <Caret Line="194" TopLine="172"/>
@@ -567,6 +585,46 @@
       <Position>
         <Filename Value="frametildadesignpanel.pas"/>
         <Caret Line="86" Column="63" TopLine="67"/>
+      </Position>
+      <Position>
+        <Filename Value="formtildadesignmain.pas"/>
+        <Caret Line="539" Column="73" TopLine="520"/>
+      </Position>
+      <Position>
+        <Filename Value="TildaDesigner.lpr"/>
+        <Caret Line="43" TopLine="9"/>
+      </Position>
+      <Position>
+        <Filename Value="/usr/share/lazarus/2.2.0/lcl/interfaces/gtk3/gtk3widgets.pas"/>
+        <Caret Line="2562" Column="22" TopLine="2544"/>
+      </Position>
+      <Position>
+        <Filename Value="../../.lazarus/onlinepackagemanager/packages/VirtualTreeView V5/Source/VirtualTrees.pas"/>
+        <Caret Line="77" Column="3" TopLine="59"/>
+      </Position>
+      <Position>
+        <Filename Value="../../.lazarus/onlinepackagemanager/packages/lclextensions/delphicompat.pas"/>
+        <Caret Line="137" Column="2" TopLine="119"/>
+      </Position>
+      <Position>
+        <Filename Value="/usr/share/lazarus/2.2.0/lcl/interfaces/fpgui/fpguicrosshelpers.pas"/>
+        <Caret Line="10" Column="5"/>
+      </Position>
+      <Position>
+        <Filename Value="../../.lazarus/onlinepackagemanager/packages/lclextensions/delphicompat.pas"/>
+        <Caret Line="136" Column="13" TopLine="120"/>
+      </Position>
+      <Position>
+        <Filename Value="/usr/share/lazarus/2.2.0/lcl/interfaces/gtk3/gtk3widgets.pas"/>
+        <Caret Line="2562" Column="22" TopLine="2545"/>
+      </Position>
+      <Position>
+        <Filename Value="TildaDesigner.lpr"/>
+        <Caret Line="43" TopLine="10"/>
+      </Position>
+      <Position>
+        <Filename Value="/usr/share/lazarus/2.2.0/lcl/interfaces/fpgui/fpguicrosshelpers.pas"/>
+        <Caret Line="15" Column="27"/>
       </Position>
     </JumpHistory>
     <RunParams>
