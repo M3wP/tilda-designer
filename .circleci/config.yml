@@ -9,8 +9,33 @@ jobs:
             - "58:7e:ce:12:a6:aa:55:76:e2:2b:d0:97:c5:5b:02:f2"
       - checkout # check out the code in the project directory
       - run: |
-          echo "hello world"
-          touch dummy.txt
-          git add dummy.txt
+          echo "***INSTALL LAZARUS***"
+          curl -L -o ~/fpc-src-3.2.2-20210709-macosx.dmg 'https://sourceforge.net/projects/lazarus/files/Lazarus%20macOS%20x86-64/Lazarus%202.2.0/fpc-src-3.2.2-20210709-macosx.dmg'
+          ls -l ~
+          hdiutil attach ~/fpc-src-3.2.2-20210709-macosx.dmg
+          ls -l /Volumes/fpcsrc-3.2.2
+          sudo installer -pkg /Volumes/fpcsrc-3.2.2/fpcsrc-3.2.2-20210709.pkg -target /
+          curl -L -o ~/fpc-3.2.2.intelarm64-macosx.dmg 'https://sourceforge.net/projects/lazarus/files/Lazarus%20macOS%20x86-64/Lazarus%202.2.0/fpc-3.2.2.intelarm64-macosx.dmg'
+          hdiutil attach ~/fpc-3.2.2.intelarm64-macosx.dmg
+          ls -l /Volumes/fpc-3.2.2.intelarm64-macosx
+          sudo installer -pkg /Volumes/fpc-3.2.2.intelarm64-macosx/fpc-3.2.2-intelarm64-macosx.mpkg -target /
+          curl -L -o ~/Lazarus-2.2.0-0-x86_64-macosx.pkg 'https://sourceforge.net/projects/lazarus/files/Lazarus%20macOS%20x86-64/Lazarus%202.2.0/Lazarus-2.2.0-0-x86_64-macosx.pkg'
+          sudo installer -verbose -pkg ~/Lazarus-2.2.0-0-x86_64-macosx.pkg -target /
+          echo "***INSTALL LIBS***"
+          curl -L -o bgrabitmap.zip 'https://github.com/bgrabitmap/bgrabitmap/archive/refs/heads/master.zip'
+          unzip -d ~/. bgrabitmap.zip 
+          export PATH=/Applications/Lazarus:$PATH
+          make -C ~/bgrabitmap-master generate
+          make -C ~/bgrabitmap-master BGRABitmapPack
+          curl -L -o virtualtrees.zip 'https://github.com/blikblum/VirtualTreeView-Lazarus/archive/refs/heads/lazarus-v5.zip'
+          unzip -d ~/. virtualtrees.zip
+          lazbuild ~/VirtualTreeView-Lazarus-lazarus-v5/Source/virtualtreeview_package.lpk
+          lazbuild --add-package ~/VirtualTreeView-Lazarus-lazarus-v5/Source/virtualtreeview_package.lpk
+          echo "***BUILD APPLICATION***"
+          lazbuild TildaDesigner.lpi
+          echo "***BUILD PACKAGE***"
+          hdiutil create -srcfolder ./TildaDesigner.app TildaDesigner.dmg
+          echo "***UPDATE GIT***"
+          git add TildaDesigner.dmg
           git commit -m "AUTODUMMY"
           git push
